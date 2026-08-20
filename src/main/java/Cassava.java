@@ -11,7 +11,7 @@ public class Cassava {
                 " / ___|__ _ ___ ___  __ ___   ____ _\n" +
                 "| |   / _` / __/ __|/ _` \\ \\ / / _` |\n" +
                 "| |__| (_| \\__ \\__ \\ (_| |\\ V / (_| |\n" +
-                " \\____\\__,_|___/___/\\__,_| \\_/ \\__,_|\n";
+                " \\____\\__,_|___/___/\\__,_| \\_/ \\__,_|";
         System.out.println(banner);
 
         System.out.println("__________________________________________________");
@@ -19,15 +19,21 @@ public class Cassava {
         System.out.println("How can I help you today?");
     }
 
+    public static void printBorder() {
+        System.out.println("__________________________________________________");
+    }
+
     public static String scanUserInput() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("__________________________________________________");
+        printBorder();
         String command = scanner.nextLine();
         return command;
     }
 
     public static boolean handleCommand(String command) {
+        printBorder();
+
         String[] args = command.split("\s");
 
         if (args.length <= 0) {
@@ -49,8 +55,6 @@ public class Cassava {
     }
 
     public static boolean handleAdd(String description) {
-        System.out.println("__________________________________________________");
-
         if (numItems < 100) {
             Item item = new Item(description);
             items[numItems++] = item;
@@ -63,8 +67,6 @@ public class Cassava {
     }
 
     public static boolean handleList() {
-        System.out.println("__________________________________________________");
-
         if (numItems == 0) {
             System.out.println("No items have been added yet...");
         }
@@ -84,7 +86,6 @@ public class Cassava {
             }
             items[index].mark();
 
-            System.out.println("__________________________________________________");
             System.out.println(items[index].toString());
 
             return false;
@@ -94,13 +95,11 @@ public class Cassava {
     }
 
     public static boolean handleInvalid() {
-        System.out.println("__________________________________________________");
         System.out.println("Sorry, I don't understand that command.");
         return false;
     }
 
     public static boolean handleExit() {
-        System.out.println("__________________________________________________");
         System.out.println("Bye! See you again soon.");
         return true;
     }
