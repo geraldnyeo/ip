@@ -3,8 +3,8 @@ import java.util.Scanner;
 public class Cassava {
     private static String name = "Cassava";
 
-    private static Item[] items = new Item[100];
-    private static int numItems = 0;
+    private static Task[] tasks = new Task[100];
+    private static int numTasks = 0;
 
     public static void printIntro() {
         String banner = "  ____                               \n" +
@@ -46,12 +46,12 @@ public class Cassava {
             return handleExit();
         } else if (args[0].equals("mark")) {
             if (args.length <= 1) {
-                return handleInvalid("You did not specify an item to mark.");
+                return handleInvalid("You did not specify a task to mark.");
             }
             return handleMark(args[1]);
         } else if (args[0].equals("unmark")) {
             if (args.length <= 1) {
-                return handleInvalid("You did not specify an item to unmark.");
+                return handleInvalid("You did not specify a task to unmark.");
             }
             return handleUnmark(args[1]);
         } else {
@@ -60,24 +60,24 @@ public class Cassava {
     }
 
     public static boolean handleAdd(String description) {
-        if (numItems < 100) {
-            Item item = new Item(description);
-            items[numItems++] = item;
+        if (numTasks < 100) {
+            Task task = new Task(description);
+            tasks[numTasks++] = task;
             System.out.println("Added: " + description);
         } else {
-            System.out.println("Sorry, there's no more space to add further items...");
+            System.out.println("Sorry, there's no more space to add further tasks...");
         }
 
         return false;
     }
 
     public static boolean handleList() {
-        if (numItems == 0) {
-            System.out.println("No items have been added yet...");
+        if (numTasks == 0) {
+            System.out.println("No tasks have been added yet...");
         }
 
-        for (int i = 0; i < numItems; ++i) {
-            System.out.println((i+1) + ". " + items[i].toString());
+        for (int i = 0; i < numTasks; ++i) {
+            System.out.println((i+1) + ". " + tasks[i].toString());
         }
 
         return false;
@@ -86,32 +86,32 @@ public class Cassava {
     public static boolean handleMark(String index_arg) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
-            if (index > numItems) {
-                return handleInvalid("There is no such item, I cannot mark it.");
+            if (index > numTasks) {
+                return handleInvalid("There is no such task, I cannot mark it.");
             }
-            items[index].mark();
+            tasks[index].mark();
 
-            System.out.println(items[index].toString());
+            System.out.println(tasks[index].toString());
 
             return false;
         } catch (NumberFormatException e) {
-            return handleInvalid("Please use only numbers to specify the item you wish to mark.");
+            return handleInvalid("Please use only numbers to specify the task you wish to mark.");
         }
     }
 
     public static boolean handleUnmark(String index_arg) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
-            if (index > numItems) {
-                return handleInvalid("There is no such item, I cannot mark it.");
+            if (index > numTasks) {
+                return handleInvalid("There is no such task, I cannot unmark it.");
             }
-            items[index].unmark();
+            tasks[index].unmark();
 
-            System.out.println(items[index].toString());
+            System.out.println(tasks[index].toString());
 
             return false;
         } catch (NumberFormatException e) {
-            return handleInvalid("Please use only numbers to specify the item you wish to mark.");
+            return handleInvalid("Please use only numbers to specify the task you wish to mark.");
         }
     }
 
