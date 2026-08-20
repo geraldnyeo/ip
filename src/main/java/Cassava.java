@@ -1,4 +1,5 @@
 import task.DeadlineTask;
+import task.EventTask;
 import task.Task;
 import task.ToDoTask;
 
@@ -73,6 +74,22 @@ public class Cassava {
             String[] byArgs = Arrays.copyOfRange(args, byIndex + 1, args.length);
             String byDate = String.join(" ", byArgs);
             return handleAddDeadline(desc, byDate);
+        } else if (args[0].equals("event")) {
+            int fromIndex = Arrays.asList(args).indexOf("\\from");
+            if (fromIndex == -1) {
+                return handleInvalid("You did not specify a time for 'from'");
+            }
+            int toIndex = Arrays.asList(args).indexOf("\\to");
+            if (toIndex == -1) {
+                return handleInvalid("You did not specify a time for 'to'");
+            }
+            String[] descArgs = Arrays.copyOfRange(args, 1, fromIndex);
+            String desc = String.join(" ", descArgs);
+            String[] fromArgs = Arrays.copyOfRange(args, fromIndex + 1, args.length);
+            String fromTime = String.join(" ", fromArgs);
+            String[] toArgs = Arrays.copyOfRange(args, toIndex + 1, args.length);
+            String toTime = String.join(" ", toArgs);
+            return handleAddEvent(desc, fromTime, toTime);
         } else {
             return handleInvalid("Sorry, I don't recognise this command.");
         }
@@ -93,6 +110,18 @@ public class Cassava {
     public static boolean handleAddDeadline(String description, String byDate) {
         if (numTasks < 100) {
             Task task = new DeadlineTask(description, byDate);
+            tasks[numTasks++] = task;
+            System.out.println("Added task: " + task.toString());
+        } else {
+            System.out.println("Sorry, there's no more space to add further tasks...");
+        }
+
+        return false;
+    }
+
+    public static boolean handleAddEvent(String description, String fromTime, String toTime) {
+        if (numTasks < 100) {
+            Task task = new EventTask(description, fromTime, toTime);
             tasks[numTasks++] = task;
             System.out.println("Added task: " + task.toString());
         } else {
