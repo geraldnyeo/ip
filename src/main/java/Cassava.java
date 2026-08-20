@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Cassava {
     private static String name = "Cassava";
 
-    private static String[] items = new String[100];
+    private static Item[] items = new Item[100];
     private static int numItems = 0;
 
     public static void printIntro() {
@@ -47,7 +47,7 @@ public class Cassava {
         }
 
         for (int i = 0; i < numItems; ++i) {
-            System.out.println(i + ". " + items[i]);
+            System.out.println(i + ". " + items[i].toString());
         }
 
         return false;
