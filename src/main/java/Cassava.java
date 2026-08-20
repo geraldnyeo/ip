@@ -3,14 +3,15 @@ import task.EventTask;
 import task.Task;
 import task.ToDoTask;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Cassava {
     private static String name = "Cassava";
 
-    private static Task[] tasks = new Task[100];
-    private static int numTasks = 0;
+    private static List<Task> tasks = new ArrayList<Task>();
 
     public static void printIntro() {
         String banner = "  ____                               \n" +
@@ -96,48 +97,33 @@ public class Cassava {
     }
 
     public static boolean handleAddTodo(String description) {
-        if (numTasks < 100) {
-            Task task = new ToDoTask(description);
-            tasks[numTasks++] = task;
-            System.out.println("Added: " + description);
-        } else {
-            System.out.println("Sorry, there's no more space to add further tasks...");
-        }
-
+        Task task = new ToDoTask(description);
+        tasks.add(task);
+        System.out.println("Added: " + description);
         return false;
     }
 
     public static boolean handleAddDeadline(String description, String byDate) {
-        if (numTasks < 100) {
-            Task task = new DeadlineTask(description, byDate);
-            tasks[numTasks++] = task;
-            System.out.println("Added task: " + task.toString());
-        } else {
-            System.out.println("Sorry, there's no more space to add further tasks...");
-        }
-
+        Task task = new DeadlineTask(description, byDate);
+        tasks.add(task);
+        System.out.println("Added task: " + task.toString());
         return false;
     }
 
     public static boolean handleAddEvent(String description, String fromTime, String toTime) {
-        if (numTasks < 100) {
-            Task task = new EventTask(description, fromTime, toTime);
-            tasks[numTasks++] = task;
-            System.out.println("Added task: " + task.toString());
-        } else {
-            System.out.println("Sorry, there's no more space to add further tasks...");
-        }
-
+        Task task = new EventTask(description, fromTime, toTime);
+        tasks.add(task);
+        System.out.println("Added task: " + task.toString());
         return false;
     }
 
     public static boolean handleList() {
-        if (numTasks == 0) {
+        if (tasks.size() == 0) {
             System.out.println("No tasks have been added yet...");
         }
 
-        for (int i = 0; i < numTasks; ++i) {
-            System.out.println((i+1) + ". " + tasks[i].toString());
+        for (int i = 0; i < tasks.size(); ++i) {
+            System.out.println((i+1) + ". " + tasks.get(i).toString());
         }
 
         return false;
@@ -146,12 +132,12 @@ public class Cassava {
     public static boolean handleMark(String index_arg) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
-            if (index > numTasks) {
+            if (index > tasks.size()) {
                 return handleInvalid("There is no such task, I cannot mark it.");
             }
-            tasks[index].mark();
+            tasks.get(index).mark();
 
-            System.out.println(tasks[index].toString());
+            System.out.println(tasks.get(index).toString());
 
             return false;
         } catch (NumberFormatException e) {
@@ -162,12 +148,12 @@ public class Cassava {
     public static boolean handleUnmark(String index_arg) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
-            if (index > numTasks) {
+            if (index > tasks.size()) {
                 return handleInvalid("There is no such task, I cannot unmark it.");
             }
-            tasks[index].unmark();
+            tasks.get(index).unmark();
 
-            System.out.println(tasks[index].toString());
+            System.out.println(tasks.get(index).toString());
 
             return false;
         } catch (NumberFormatException e) {
