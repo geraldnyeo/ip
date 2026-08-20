@@ -1,3 +1,7 @@
+import task.Task;
+import task.ToDoTask;
+
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Cassava {
@@ -54,14 +58,18 @@ public class Cassava {
                 return handleInvalid("You did not specify a task to unmark.");
             }
             return handleUnmark(args[1]);
+        } else if (args[0].equals("todo")) {
+            String[] rest = Arrays.copyOfRange(args, 1, args.length);
+            String desc = String.join(" ", rest);
+            return handleAddTodo(desc);
         } else {
-            return handleAdd(command);
+            return handleInvalid("Sorry, I don't recognise this command.");
         }
     }
 
-    public static boolean handleAdd(String description) {
+    public static boolean handleAddTodo(String description) {
         if (numTasks < 100) {
-            Task task = new Task(description);
+            Task task = new ToDoTask(description);
             tasks[numTasks++] = task;
             System.out.println("Added: " + description);
         } else {

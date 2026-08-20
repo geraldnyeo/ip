@@ -1,4 +1,6 @@
-public class Task {
+package task;
+
+public abstract class Task {
     private String description;
     private boolean completed;
 
@@ -9,8 +11,12 @@ public class Task {
 
     @Override
     public String toString() {
-        return "[" + (completed ? "X" : " ") + "] " + description;
+        return "[" + getTaskTypeToken() + "] " +
+                "[" + (completed ? "X" : " ") + "] " +
+                description;
     }
+
+    public abstract String getTaskTypeToken();
 
     public void mark() {
         this.completed = true;
