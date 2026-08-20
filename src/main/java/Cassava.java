@@ -91,6 +91,11 @@ public class Cassava {
             String[] toArgs = Arrays.copyOfRange(args, toIndex + 1, args.length);
             String toTime = String.join(" ", toArgs);
             return handleAddEvent(desc, fromTime, toTime);
+        } else if (args[0].equals("delete")) {
+            if (args.length <= 1) {
+                return handleInvalid("You did not specify a task to delete.");
+            }
+            return handleDelete(args[1]);
         } else {
             return handleInvalid("Sorry, I don't recognise this command.");
         }
@@ -158,6 +163,22 @@ public class Cassava {
             return false;
         } catch (NumberFormatException e) {
             return handleInvalid("Please use only numbers to specify the task you wish to mark.");
+        }
+    }
+
+    public static boolean handleDelete(String index_arg) {
+        try {
+            int index = Integer.parseInt(index_arg) - 1;
+            if (index > tasks.size()) {
+                return handleInvalid("There is no such task, I cannot delete it.");
+            }
+            Task task = tasks.remove(index);
+
+            System.out.println(task.toString());
+
+            return false;
+        } catch (NumberFormatException e) {
+            return handleInvalid("Please use only numbers to specify the task you wish to delete.");
         }
     }
 
