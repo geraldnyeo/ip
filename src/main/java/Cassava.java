@@ -3,12 +3,21 @@ import task.EventTask;
 import task.Task;
 import task.ToDoTask;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Cassava {
+    private static List<String> valid_cmds = new ArrayList<String>(
+            Arrays.asList(
+                "list",
+                "todo",
+                "deadline",
+                "event",
+                "mark",
+                "unmark",
+                "bye"
+            )
+    );
+
     private static String name = "Cassava";
 
     private static List<Task> tasks = new ArrayList<Task>();
@@ -34,69 +43,88 @@ public class Cassava {
         Scanner scanner = new Scanner(System.in);
 
         printBorder();
-        String command = scanner.nextLine();
-        return command;
+        String input = scanner.nextLine();
+        return input;
     }
 
-    public static boolean handleCommand(String command) {
+    public static HashMap<String, String> parseUserInput(String input) {
+        HashMap<String, String> args = new HashMap<String, String>();
+        String[] tokens = input.split("\s");
+
+        args.put("command", tokens[0]);
+
+        String param = tokens[0];
+        StringBuilder option = new StringBuilder();
+        for (int i = 1; i < tokens.length; ++i) {
+            if (tokens[i].charAt(0) == '\\') {
+                args.put(param, option.toString());
+                param = tokens[i].substring(1);
+                option = new StringBuilder();
+            } else {
+                option.append(tokens[i]);
+            }
+        }
+        args.put(param, option.toString());
+
+        return args;
+    }
+
+    public static boolean handleInput(HashMap<String, String> input_args) {
         printBorder();
 
+        String command = input_args.getOrDefault("command", "");
+        String command_option = input_args.getOrDefault(command, "");
         if (command.equals("")) {
             return handleInvalid("You have not entered any text.");
         }
+        if (!valid_cmds.contains(command)) {
+            return handleInvalid("Sorry, I don't recognise this command.");
+        }
 
-        String[] args = command.split("\s");
-
-        if (args[0].equals("list")) {
+        if (command.equals("list")) {
             return handleList();
-        } else if (args[0].equals("bye")) {
-            return handleExit();
-        } else if (args[0].equals("mark")) {
-            if (args.length <= 1) {
-                return handleInvalid("You did not specify a task to mark.");
+        } else if (command.equals("todo")) {
+            if (command_option.equals("")) {
+                return handleInvalid("You did not specify a task to add.");
             }
-            return handleMark(args[1]);
-        } else if (args[0].equals("unmark")) {
-            if (args.length <= 1) {
-                return handleInvalid("You did not specify a task to unmark.");
+            return handleAddTodo(command_option);
+        } else if (command.equals("deadline")) {
+            if (command_option.equals("")) {
+                return handleInvalid("You did not specify a task to add.");
             }
-            return handleUnmark(args[1]);
-        } else if (args[0].equals("todo")) {
-            String[] rest = Arrays.copyOfRange(args, 1, args.length);
-            String desc = String.join(" ", rest);
-            return handleAddTodo(desc);
-        } else if (args[0].equals("deadline")) {
-            int byIndex = Arrays.asList(args).indexOf("\\by");
-            if (byIndex == -1) {
+            if (!input_args.containsKey("by")) {
                 return handleInvalid("You did not specify a date for the deadline.");
             }
-            String[] descArgs = Arrays.copyOfRange(args, 1, byIndex);
-            String desc = String.join(" ", descArgs);
-            String[] byArgs = Arrays.copyOfRange(args, byIndex + 1, args.length);
-            String byDate = String.join(" ", byArgs);
-            return handleAddDeadline(desc, byDate);
-        } else if (args[0].equals("event")) {
-            int fromIndex = Arrays.asList(args).indexOf("\\from");
-            if (fromIndex == -1) {
-                return handleInvalid("You did not specify a time for 'from'");
+            return handleAddDeadline(command_option, input_args.get("by"));
+        } else if (command.equals("event")) {
+            if (command_option.equals("")) {
+                return handleInvalid("You did not specify a task to add.");
             }
-            int toIndex = Arrays.asList(args).indexOf("\\to");
-            if (toIndex == -1) {
-                return handleInvalid("You did not specify a time for 'to'");
+            if (!input_args.containsKey("from")) {
+                return handleInvalid("You did not specify a time for 'from'.");
             }
-            String[] descArgs = Arrays.copyOfRange(args, 1, fromIndex);
-            String desc = String.join(" ", descArgs);
-            String[] fromArgs = Arrays.copyOfRange(args, fromIndex + 1, args.length);
-            String fromTime = String.join(" ", fromArgs);
-            String[] toArgs = Arrays.copyOfRange(args, toIndex + 1, args.length);
-            String toTime = String.join(" ", toArgs);
-            return handleAddEvent(desc, fromTime, toTime);
-        } else if (args[0].equals("delete")) {
-            if (args.length <= 1) {
+            if (!input_args.containsKey("to")) {
+                return handleInvalid("You did not specify a time for 'to'.");
+            }
+            return handleAddEvent(command_option, input_args.get("from"), input_args.get("to"));
+        } else if (command.equals("mark")) {
+            if (command_option.equals("")) {
+                return handleInvalid("You did not specify a task to mark.");
+            }
+            return handleMark(command_option);
+        } else if (command.equals("unmark")) {
+            if (command_option.equals("")) {
+                return handleInvalid("You did not specify a task to unmark.");
+            }
+            return handleUnmark(command_option);
+        } else if (command.equals("delete")) {
+            if (command_option.equals("")) {
                 return handleInvalid("You did not specify a task to delete.");
             }
-            return handleDelete(args[1]);
-        } else {
+            return handleDelete(command_option);
+        } else if (command.equals("bye")) {
+            return handleExit();
+        }  else {
             return handleInvalid("Sorry, I don't recognise this command.");
         }
     }
@@ -197,8 +225,9 @@ public class Cassava {
 
         boolean exit = false;
         while (!exit) {
-            String command = scanUserInput();
-            exit = handleCommand(command);
+            String input = scanUserInput();
+            HashMap<String, String> input_args = parseUserInput(input);
+            exit = handleInput(input_args);
         }
     }
 }
