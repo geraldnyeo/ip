@@ -59,7 +59,7 @@ public class Cassava {
         }
 
         for (int i = 0; i < numItems; ++i) {
-            System.out.println(i + ". " + items[i].toString());
+            System.out.println((i+1) + ". " + items[i].toString());
         }
 
         return false;
