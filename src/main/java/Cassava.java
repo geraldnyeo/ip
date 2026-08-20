@@ -43,7 +43,7 @@ public class Cassava {
         if (numItems < 100) {
             Item item = new Item(description);
             items[numItems++] = item;
-            System.out.println("Added: " + item.toString());
+            System.out.println("Added: " + description);
         } else {
             System.out.println("Sorry, there's no more space to add further items...");
         }
