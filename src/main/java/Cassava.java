@@ -3,6 +3,9 @@ import java.util.Scanner;
 public class Cassava {
     private static String name = "Cassava";
 
+    private static String[] items = new String[100];
+    private static int numItems = 0;
+
     public static void printIntro() {
         String banner = "  ____                               \n" +
                 " / ___|__ _ ___ ___  __ ___   ____ _\n" +
@@ -25,13 +28,29 @@ public class Cassava {
     }
 
     public static boolean handleCommand(String command) {
-        if (command.equals("bye")) {
+        if (command.equals("list")) {
+            return handleList();
+        } else if (command.equals("bye")) {
             return handleExit();
         } else {
             System.out.println("__________________________________________________");
             System.out.println(command);
             return false;
         }
+    }
+
+    public static boolean handleList() {
+        System.out.println("__________________________________________________");
+
+        if (numItems == 0) {
+            System.out.println("No items have been added yet...");
+        }
+
+        for (int i = 0; i < numItems; ++i) {
+            System.out.println(i + ". " + items[i]);
+        }
+
+        return false;
     }
 
     public static boolean handleExit() {
