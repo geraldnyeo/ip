@@ -34,11 +34,11 @@ public class Cassava {
     public static boolean handleCommand(String command) {
         printBorder();
 
-        String[] args = command.split("\s");
-
-        if (args.length <= 0) {
-            return handleInvalid();
+        if (command.equals("")) {
+            return handleInvalid("You have not entered any text.");
         }
+
+        String[] args = command.split("\s");
 
         if (args[0].equals("list")) {
             return handleList();
@@ -46,7 +46,7 @@ public class Cassava {
             return handleExit();
         } else if (args[0].equals("mark")) {
             if (args.length <= 1) {
-                return handleInvalid();
+                return handleInvalid("You did not specify an item to mark.");
             }
             return handleMark(args[1]);
         } else {
@@ -82,7 +82,7 @@ public class Cassava {
         try {
             int index = Integer.parseInt(index_arg) - 1;
             if (index > numItems) {
-                return handleInvalid();
+                return handleInvalid("There is no such item, I cannot mark it.");
             }
             items[index].mark();
 
@@ -90,12 +90,12 @@ public class Cassava {
 
             return false;
         } catch (NumberFormatException e) {
-            return handleInvalid();
+            return handleInvalid("Please use only numbers to specify the item you wish to mark.");
         }
     }
 
-    public static boolean handleInvalid() {
-        System.out.println("Sorry, I don't understand that command.");
+    public static boolean handleInvalid(String msg) {
+        System.out.println(msg);
         return false;
     }
 
