@@ -1,3 +1,4 @@
+import task.DeadlineTask;
 import task.Task;
 import task.ToDoTask;
 
@@ -62,6 +63,16 @@ public class Cassava {
             String[] rest = Arrays.copyOfRange(args, 1, args.length);
             String desc = String.join(" ", rest);
             return handleAddTodo(desc);
+        } else if (args[0].equals("deadline")) {
+            int byIndex = Arrays.asList(args).indexOf("\\by");
+            if (byIndex == -1) {
+                return handleInvalid("You did not specify a date for the deadline.");
+            }
+            String[] descArgs = Arrays.copyOfRange(args, 1, byIndex);
+            String desc = String.join(" ", descArgs);
+            String[] byArgs = Arrays.copyOfRange(args, byIndex + 1, args.length);
+            String byDate = String.join(" ", byArgs);
+            return handleAddDeadline(desc, byDate);
         } else {
             return handleInvalid("Sorry, I don't recognise this command.");
         }
@@ -72,6 +83,18 @@ public class Cassava {
             Task task = new ToDoTask(description);
             tasks[numTasks++] = task;
             System.out.println("Added: " + description);
+        } else {
+            System.out.println("Sorry, there's no more space to add further tasks...");
+        }
+
+        return false;
+    }
+
+    public static boolean handleAddDeadline(String description, String byDate) {
+        if (numTasks < 100) {
+            Task task = new DeadlineTask(description, byDate);
+            tasks[numTasks++] = task;
+            System.out.println("Added task: " + task.toString());
         } else {
             System.out.println("Sorry, there's no more space to add further tasks...");
         }
