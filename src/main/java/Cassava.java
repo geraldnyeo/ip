@@ -33,10 +33,22 @@ public class Cassava {
         } else if (command.equals("bye")) {
             return handleExit();
         } else {
-            System.out.println("__________________________________________________");
-            System.out.println(command);
-            return false;
+            return handleAdd(command);
         }
+    }
+
+    public static boolean handleAdd(String description) {
+        System.out.println("__________________________________________________");
+
+        if (numItems < 100) {
+            Item item = new Item(description);
+            items[numItems++] = item;
+            System.out.println("Added: " + item.toString());
+        } else {
+            System.out.println("Sorry, there's no more space to add further items...");
+        }
+
+        return false;
     }
 
     public static boolean handleList() {
