@@ -49,6 +49,11 @@ public class Cassava {
                 return handleInvalid("You did not specify an item to mark.");
             }
             return handleMark(args[1]);
+        } else if (args[0].equals("unmark")) {
+            if (args.length <= 1) {
+                return handleInvalid("You did not specify an item to unmark.");
+            }
+            return handleUnmark(args[1]);
         } else {
             return handleAdd(command);
         }
@@ -85,6 +90,22 @@ public class Cassava {
                 return handleInvalid("There is no such item, I cannot mark it.");
             }
             items[index].mark();
+
+            System.out.println(items[index].toString());
+
+            return false;
+        } catch (NumberFormatException e) {
+            return handleInvalid("Please use only numbers to specify the item you wish to mark.");
+        }
+    }
+
+    public static boolean handleUnmark(String index_arg) {
+        try {
+            int index = Integer.parseInt(index_arg) - 1;
+            if (index > numItems) {
+                return handleInvalid("There is no such item, I cannot mark it.");
+            }
+            items[index].unmark();
 
             System.out.println(items[index].toString());
 
