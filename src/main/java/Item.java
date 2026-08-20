@@ -11,4 +11,12 @@ public class Item {
     public String toString() {
         return "[" + (completed ? "X" : " ") + "] " + description;
     }
+
+    public void mark() {
+        this.completed = true;
+    }
+
+    public void unmark() {
+        this.completed = false;
+    }
 }

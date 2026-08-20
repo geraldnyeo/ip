@@ -28,10 +28,21 @@ public class Cassava {
     }
 
     public static boolean handleCommand(String command) {
-        if (command.equals("list")) {
+        String[] args = command.split("\s");
+
+        if (args.length <= 0) {
+            return handleInvalid();
+        }
+
+        if (args[0].equals("list")) {
             return handleList();
-        } else if (command.equals("bye")) {
+        } else if (args[0].equals("bye")) {
             return handleExit();
+        } else if (args[0].equals("mark")) {
+            if (args.length <= 1) {
+                return handleInvalid();
+            }
+            return handleMark(args[1]);
         } else {
             return handleAdd(command);
         }
@@ -62,6 +73,29 @@ public class Cassava {
             System.out.println((i+1) + ". " + items[i].toString());
         }
 
+        return false;
+    }
+
+    public static boolean handleMark(String index_arg) {
+        try {
+            int index = Integer.parseInt(index_arg) - 1;
+            if (index > numItems) {
+                return handleInvalid();
+            }
+            items[index].mark();
+
+            System.out.println("__________________________________________________");
+            System.out.println(items[index].toString());
+
+            return false;
+        } catch (NumberFormatException e) {
+            return handleInvalid();
+        }
+    }
+
+    public static boolean handleInvalid() {
+        System.out.println("__________________________________________________");
+        System.out.println("Sorry, I don't understand that command.");
         return false;
     }
 
