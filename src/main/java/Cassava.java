@@ -14,6 +14,7 @@ public class Cassava {
                 "event",
                 "mark",
                 "unmark",
+                "delete",
                 "bye"
             )
     );
@@ -69,7 +70,10 @@ public class Cassava {
         return args;
     }
 
-    public static boolean handleInput(HashMap<String, String> input_args) {
+    public static boolean handleInput(
+            List<Task> tasks,
+            HashMap<String, String> input_args
+    ) {
         printBorder();
 
         String command = input_args.getOrDefault("command", "");
@@ -82,12 +86,12 @@ public class Cassava {
         }
 
         if (command.equals("list")) {
-            return handleList();
+            return handleList(tasks);
         } else if (command.equals("todo")) {
             if (command_option.equals("")) {
                 return handleInvalid("You did not specify a task to add.");
             }
-            return handleAddTodo(command_option);
+            return handleAddTodo(tasks, command_option);
         } else if (command.equals("deadline")) {
             if (command_option.equals("")) {
                 return handleInvalid("You did not specify a task to add.");
@@ -95,7 +99,7 @@ public class Cassava {
             if (!input_args.containsKey("by")) {
                 return handleInvalid("You did not specify a date for the deadline.");
             }
-            return handleAddDeadline(command_option, input_args.get("by"));
+            return handleAddDeadline(tasks, command_option, input_args.get("by"));
         } else if (command.equals("event")) {
             if (command_option.equals("")) {
                 return handleInvalid("You did not specify a task to add.");
@@ -106,22 +110,22 @@ public class Cassava {
             if (!input_args.containsKey("to")) {
                 return handleInvalid("You did not specify a time for 'to'.");
             }
-            return handleAddEvent(command_option, input_args.get("from"), input_args.get("to"));
+            return handleAddEvent(tasks, command_option, input_args.get("from"), input_args.get("to"));
         } else if (command.equals("mark")) {
             if (command_option.equals("")) {
                 return handleInvalid("You did not specify a task to mark.");
             }
-            return handleMark(command_option);
+            return handleMark(tasks, command_option);
         } else if (command.equals("unmark")) {
             if (command_option.equals("")) {
                 return handleInvalid("You did not specify a task to unmark.");
             }
-            return handleUnmark(command_option);
+            return handleUnmark(tasks, command_option);
         } else if (command.equals("delete")) {
             if (command_option.equals("")) {
                 return handleInvalid("You did not specify a task to delete.");
             }
-            return handleDelete(command_option);
+            return handleDelete(tasks, command_option);
         } else if (command.equals("bye")) {
             return handleExit();
         }  else {
@@ -129,28 +133,7 @@ public class Cassava {
         }
     }
 
-    public static boolean handleAddTodo(String description) {
-        Task task = new ToDoTask(description);
-        tasks.add(task);
-        System.out.println("Added: " + description);
-        return false;
-    }
-
-    public static boolean handleAddDeadline(String description, String byDate) {
-        Task task = new DeadlineTask(description, byDate);
-        tasks.add(task);
-        System.out.println("Added task: " + task.toString());
-        return false;
-    }
-
-    public static boolean handleAddEvent(String description, String fromTime, String toTime) {
-        Task task = new EventTask(description, fromTime, toTime);
-        tasks.add(task);
-        System.out.println("Added task: " + task.toString());
-        return false;
-    }
-
-    public static boolean handleList() {
+    public static boolean handleList(List<Task> tasks) {
         if (tasks.size() == 0) {
             System.out.println("No tasks have been added yet...");
         }
@@ -162,7 +145,43 @@ public class Cassava {
         return false;
     }
 
-    public static boolean handleMark(String index_arg) {
+    public static boolean handleAddTodo(
+            List<Task> tasks,
+            String description
+    ) {
+        Task task = new ToDoTask(description);
+        tasks.add(task);
+        System.out.println("Added: " + description);
+        return false;
+    }
+
+    public static boolean handleAddDeadline(
+            List<Task> tasks,
+            String description,
+            String byDate
+    ) {
+        Task task = new DeadlineTask(description, byDate);
+        tasks.add(task);
+        System.out.println("Added task: " + task.toString());
+        return false;
+    }
+
+    public static boolean handleAddEvent(
+            List<Task> tasks,
+            String description,
+            String fromTime,
+            String toTime
+    ) {
+        Task task = new EventTask(description, fromTime, toTime);
+        tasks.add(task);
+        System.out.println("Added task: " + task.toString());
+        return false;
+    }
+
+    public static boolean handleMark(
+            List<Task> tasks,
+            String index_arg
+    ) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
             if (index > tasks.size()) {
@@ -178,7 +197,10 @@ public class Cassava {
         }
     }
 
-    public static boolean handleUnmark(String index_arg) {
+    public static boolean handleUnmark(
+            List<Task> tasks,
+            String index_arg
+    ) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
             if (index > tasks.size()) {
@@ -194,7 +216,10 @@ public class Cassava {
         }
     }
 
-    public static boolean handleDelete(String index_arg) {
+    public static boolean handleDelete(
+            List<Task> tasks,
+            String index_arg
+    ) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
             if (index > tasks.size()) {
@@ -227,7 +252,7 @@ public class Cassava {
         while (!exit) {
             String input = scanUserInput();
             HashMap<String, String> input_args = parseUserInput(input);
-            exit = handleInput(input_args);
+            exit = handleInput(tasks, input_args);
         }
     }
 }
