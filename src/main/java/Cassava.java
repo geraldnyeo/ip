@@ -6,7 +6,7 @@ import task.ToDoTask;
 import java.util.*;
 
 public class Cassava {
-    private static List<String> valid_cmds = new ArrayList<String>(
+    private static final List<String> valid_cmds = new ArrayList<String>(
             Arrays.asList(
                 "list",
                 "todo",
@@ -19,7 +19,7 @@ public class Cassava {
             )
     );
 
-    private static String name = "Cassava";
+    private static final String name = "Cassava";
 
     private static List<Task> tasks = new ArrayList<Task>();
 
@@ -78,63 +78,55 @@ public class Cassava {
 
         String command = input_args.getOrDefault("command", "");
         String command_option = input_args.getOrDefault(command, "");
-        if (command.equals("")) {
+        if (command.isEmpty()) {
             return handleInvalid("You have not entered any text.");
         }
         if (!valid_cmds.contains(command)) {
             return handleInvalid("Sorry, I don't recognise this command.");
         }
 
-        if (command.equals("list")) {
-            return handleList(tasks);
-        } else if (command.equals("todo")) {
-            if (command_option.equals("")) {
-                return handleInvalid("You did not specify a task to add.");
-            }
-            return handleAddTodo(tasks, command_option);
-        } else if (command.equals("deadline")) {
-            if (command_option.equals("")) {
-                return handleInvalid("You did not specify a task to add.");
-            }
-            if (!input_args.containsKey("by")) {
-                return handleInvalid("You did not specify a date for the deadline.");
-            }
-            return handleAddDeadline(tasks, command_option, input_args.get("by"));
-        } else if (command.equals("event")) {
-            if (command_option.equals("")) {
-                return handleInvalid("You did not specify a task to add.");
-            }
-            if (!input_args.containsKey("from")) {
-                return handleInvalid("You did not specify a time for 'from'.");
-            }
-            if (!input_args.containsKey("to")) {
-                return handleInvalid("You did not specify a time for 'to'.");
-            }
-            return handleAddEvent(tasks, command_option, input_args.get("from"), input_args.get("to"));
-        } else if (command.equals("mark")) {
-            if (command_option.equals("")) {
-                return handleInvalid("You did not specify a task to mark.");
-            }
-            return handleMark(tasks, command_option);
-        } else if (command.equals("unmark")) {
-            if (command_option.equals("")) {
-                return handleInvalid("You did not specify a task to unmark.");
-            }
-            return handleUnmark(tasks, command_option);
-        } else if (command.equals("delete")) {
-            if (command_option.equals("")) {
-                return handleInvalid("You did not specify a task to delete.");
-            }
-            return handleDelete(tasks, command_option);
-        } else if (command.equals("bye")) {
-            return handleExit();
-        }  else {
-            return handleInvalid("Sorry, I don't recognise this command.");
+        switch (command) {
+            case "list":
+                return handleList(tasks);
+            case "todo":
+                return command_option.isEmpty()
+                        ? handleInvalid("You did not specify a task to add.")
+                        : handleAddTodo(tasks, command_option);
+            case "deadline":
+                return command_option.isEmpty()
+                        ? handleInvalid("You did not specify a task to add.")
+                        : !input_args.containsKey("by")
+                        ? handleInvalid("You did not specify a date for the deadline.")
+                        : handleAddDeadline(tasks, command_option, input_args.get("by"));
+            case "event":
+                return command_option.isEmpty()
+                        ? handleInvalid("You did not specify a task to add.")
+                        : !input_args.containsKey("from")
+                        ? handleInvalid("You did not specify a time for 'from'.")
+                        : !input_args.containsKey("to")
+                        ? handleInvalid("You did not specify a time for 'to'.")
+                        : handleAddEvent(tasks, command_option, input_args.get("from"), input_args.get("to"));
+            case "mark":
+                return command_option.isEmpty()
+                        ? handleInvalid("You did not specify a task to mark.")
+                        : handleMark(tasks, command_option);
+            case "unmark":
+                return command_option.isEmpty()
+                        ? handleInvalid("You did not specify a task to unmark.")
+                        : handleUnmark(tasks, command_option);
+            case "delete":
+                return command_option.isEmpty()
+                        ? handleInvalid("You did not specify a task to delete.")
+                        : handleDelete(tasks, command_option);
+            case "bye":
+                return handleExit();
+            default:
+                return handleInvalid("Sorry, I don't recognise this command.");
         }
     }
 
     public static boolean handleList(List<Task> tasks) {
-        if (tasks.size() == 0) {
+        if (tasks.isEmpty()) {
             System.out.println("No tasks have been added yet...");
         }
 
@@ -184,7 +176,7 @@ public class Cassava {
     ) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
-            if (index > tasks.size()) {
+            if (index >= tasks.size()) {
                 return handleInvalid("There is no such task, I cannot mark it.");
             }
             tasks.get(index).mark();
@@ -203,7 +195,7 @@ public class Cassava {
     ) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
-            if (index > tasks.size()) {
+            if (index >= tasks.size()) {
                 return handleInvalid("There is no such task, I cannot unmark it.");
             }
             tasks.get(index).unmark();
@@ -222,7 +214,7 @@ public class Cassava {
     ) {
         try {
             int index = Integer.parseInt(index_arg) - 1;
-            if (index > tasks.size()) {
+            if (index >= tasks.size()) {
                 return handleInvalid("There is no such task, I cannot delete it.");
             }
             Task task = tasks.remove(index);
