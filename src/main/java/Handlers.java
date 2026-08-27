@@ -22,44 +22,35 @@ public class Handlers {
             return handleInvalid("Sorry, I don't recognise this command.");
         }
 
-        switch (command) {
-            case "list":
-                return handleList(tasks);
-            case "todo":
-                return command_option.isEmpty()
-                        ? handleInvalid("You did not specify a task to add.")
-                        : handleAddTodo(tasks, command_option);
-            case "deadline":
-                return command_option.isEmpty()
-                        ? handleInvalid("You did not specify a task to add.")
-                        : !input_args.containsKey("by")
-                        ? handleInvalid("You did not specify a date for the deadline.")
-                        : handleAddDeadline(tasks, command_option, input_args.get("by"));
-            case "event":
-                return command_option.isEmpty()
-                        ? handleInvalid("You did not specify a task to add.")
-                        : !input_args.containsKey("from")
-                        ? handleInvalid("You did not specify a time for 'from'.")
-                        : !input_args.containsKey("to")
-                        ? handleInvalid("You did not specify a time for 'to'.")
-                        : handleAddEvent(tasks, command_option, input_args.get("from"), input_args.get("to"));
-            case "mark":
-                return command_option.isEmpty()
-                        ? handleInvalid("You did not specify a task to mark.")
-                        : handleMark(tasks, command_option);
-            case "unmark":
-                return command_option.isEmpty()
-                        ? handleInvalid("You did not specify a task to unmark.")
-                        : handleUnmark(tasks, command_option);
-            case "delete":
-                return command_option.isEmpty()
-                        ? handleInvalid("You did not specify a task to delete.")
-                        : handleDelete(tasks, command_option);
-            case "bye":
-                return handleExit();
-            default:
-                return handleInvalid("Sorry, I don't recognise this command.");
-        }
+        return switch (command) {
+            case "list" -> handleList(tasks);
+            case "todo" -> command_option.isEmpty()
+                    ? handleInvalid("You did not specify a task to add.")
+                    : handleAddTodo(tasks, command_option);
+            case "deadline" -> command_option.isEmpty()
+                    ? handleInvalid("You did not specify a task to add.")
+                    : !input_args.containsKey("by")
+                    ? handleInvalid("You did not specify a date for the deadline.")
+                    : handleAddDeadline(tasks, command_option, input_args.get("by"));
+            case "event" -> command_option.isEmpty()
+                    ? handleInvalid("You did not specify a task to add.")
+                    : !input_args.containsKey("from")
+                    ? handleInvalid("You did not specify a time for 'from'.")
+                    : !input_args.containsKey("to")
+                    ? handleInvalid("You did not specify a time for 'to'.")
+                    : handleAddEvent(tasks, command_option, input_args.get("from"), input_args.get("to"));
+            case "mark" -> command_option.isEmpty()
+                    ? handleInvalid("You did not specify a task to mark.")
+                    : handleMark(tasks, command_option);
+            case "unmark" -> command_option.isEmpty()
+                    ? handleInvalid("You did not specify a task to unmark.")
+                    : handleUnmark(tasks, command_option);
+            case "delete" -> command_option.isEmpty()
+                    ? handleInvalid("You did not specify a task to delete.")
+                    : handleDelete(tasks, command_option);
+            case "bye" -> handleExit();
+            default -> handleInvalid("Sorry, I don't recognise this command.");
+        };
     }
 
     public static boolean handleList(List<Task> tasks) {

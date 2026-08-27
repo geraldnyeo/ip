@@ -5,6 +5,12 @@ public class EventTask extends Task {
     private String from;
     private String to;
 
+    public EventTask(String description, boolean completed, String from, String to) {
+        super(description, completed);
+        this.from = from;
+        this.to = to;
+    }
+
     public EventTask(String description, String from, String to) {
         super(description);
         this.from = from;

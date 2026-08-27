@@ -4,6 +4,11 @@ public class DeadlineTask extends Task {
 
     private String date;
 
+    public DeadlineTask(String description, boolean completed, String date) {
+        super(description, completed);
+        this.date = date;
+    }
+
     public DeadlineTask(String description, String date) {
         super(description);
         this.date = date;

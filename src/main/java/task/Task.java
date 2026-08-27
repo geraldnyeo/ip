@@ -4,9 +4,13 @@ public abstract class Task {
     private String description;
     private boolean completed;
 
-    public Task(String description) {
+    public Task(String description, boolean completed) {
         this.description = description;
-        this.completed = false;
+        this.completed = completed;
+    }
+
+    public Task(String description) {
+        this(description, false);
     }
 
     @Override
