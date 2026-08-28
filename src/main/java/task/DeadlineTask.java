@@ -20,7 +20,13 @@ public class DeadlineTask extends Task {
                 " (by: " + date + ")";
     }
 
+    @Override
     public String getTaskTypeToken() {
         return "D";
+    }
+
+    @Override
+    public String toDataString() {
+        return super.toDataString() + " | " + this.date;
     }
 }

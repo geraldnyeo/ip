@@ -30,4 +30,8 @@ public class TaskFileIO {
         return tasks;
     }
 
+    public static void writeTasks(Path path, List<String> tasks) throws IOException {
+        Files.write(path, tasks);
+    }
+
 }

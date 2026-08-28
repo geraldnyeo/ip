@@ -22,6 +22,12 @@ public abstract class Task {
 
     public abstract String getTaskTypeToken();
 
+    public String toDataString() {
+        return this.getTaskTypeToken() + " | "
+                + (this.completed ? "1": "0") +  " | "
+                + this.description;
+    }
+
     public void mark() {
         this.completed = true;
     }

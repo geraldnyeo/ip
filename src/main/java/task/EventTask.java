@@ -26,4 +26,9 @@ public class EventTask extends Task {
     public String getTaskTypeToken() {
         return "E";
     }
+
+    @Override
+    public String toDataString() {
+        return super.toDataString() + " | " + this.from + " | " + this.to;
+    }
 }

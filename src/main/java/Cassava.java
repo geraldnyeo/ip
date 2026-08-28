@@ -1,11 +1,11 @@
 import data.FileFormatException;
-import data.TaskData;
 import task.Task;
 
 import java.io.IOException;
 import java.util.*;
 
 import static data.TaskData.getTasks;
+import static data.TaskData.putTasks;
 
 public class Cassava {
     private static final List<String> valid_cmds = new ArrayList<String>(
@@ -25,9 +25,26 @@ public class Cassava {
 
     private static final List<Task> tasks = new ArrayList<Task>();
 
-    private static void loadTasks() throws IOException, FileFormatException {
-        List<Task> savedTasks = getTasks();
+    private static void loadTasks() {
+        List<Task> savedTasks = new ArrayList<>();
+
+        try {
+            savedTasks = getTasks();
+        } catch (IOException | FileFormatException e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+
         tasks.addAll(savedTasks);
+    }
+
+    private static void storeTasks() {
+        try {
+            putTasks(tasks);
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(1);
+        }
     }
 
     private static void printIntro() {
@@ -78,12 +95,8 @@ public class Cassava {
     }
 
     public static void main(String[] args) {
-        try {
-            loadTasks();
-        } catch (IOException | FileFormatException e) {
-            System.out.println(e);
-            System.exit(1);
-        }
+        // Load tasks from memory
+        loadTasks();
 
         printIntro();
 
@@ -95,5 +108,7 @@ public class Cassava {
             printBorder();
             exit = Handlers.handleInput(tasks, input_args, valid_cmds);
         }
+
+        storeTasks();
     }
 }
