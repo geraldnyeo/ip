@@ -4,6 +4,8 @@ import task.Task;
 import task.ToDoTask;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -82,25 +84,46 @@ public class Handlers {
     public static boolean handleAddDeadline(
             List<Task> tasks,
             String description,
-            String byDate
+            String byDateString
     ) {
+        LocalDate byDate = LocalDate.now();
+        try {
+            byDate = LocalDate.parse(byDateString);
+        } catch (DateTimeParseException e) {
+            return handleInvalid("You must input a date in the format 'yyyy-mm-dd' for the 'by' argument.");
+        }
+
         Task task = new DeadlineTask(description, byDate);
         tasks.add(task);
         saveTasks(tasks);
+
         System.out.println("Added task: " + task.toString());
+
         return false;
     }
 
     public static boolean handleAddEvent(
             List<Task> tasks,
             String description,
-            String fromTime,
-            String toTime
+            String fromDateString,
+            String toDateString
     ) {
-        Task task = new EventTask(description, fromTime, toTime);
+        LocalDate fromDate = LocalDate.now();
+        LocalDate toDate = LocalDate.now();
+        try {
+            fromDate = LocalDate.parse(fromDateString);
+            toDate = LocalDate.parse(toDateString);
+        } catch (DateTimeParseException e) {
+            return handleInvalid("You must input a date in the format 'yyyy-mm-dd' " +
+                    "for the 'from' and 'by arguments.");
+        }
+
+        Task task = new EventTask(description, fromDate, toDate);
         tasks.add(task);
         saveTasks(tasks);
+
         System.out.println("Added task: " + task.toString());
+
         return false;
     }
 

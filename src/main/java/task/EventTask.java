@@ -1,17 +1,20 @@
 package task;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class EventTask extends Task {
 
-    private String from;
-    private String to;
+    private LocalDate from;
+    private LocalDate to;
 
-    public EventTask(String description, boolean completed, String from, String to) {
+    public EventTask(String description, boolean completed, LocalDate from, LocalDate to) {
         super(description, completed);
         this.from = from;
         this.to = to;
     }
 
-    public EventTask(String description, String from, String to) {
+    public EventTask(String description, LocalDate from, LocalDate to) {
         super(description);
         this.from = from;
         this.to = to;
@@ -20,7 +23,8 @@ public class EventTask extends Task {
     @Override
     public String toString() {
         return super.toString() +
-                " (from: " + from + " to: " + to + ")";
+                " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) +
+                " to: " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 
     public String getTaskTypeToken() {
@@ -29,6 +33,8 @@ public class EventTask extends Task {
 
     @Override
     public String toDataString() {
-        return super.toDataString() + " | " + this.from + " | " + this.to;
+        return super.toDataString() + " | " +
+                this.from.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " | " +
+                this.to.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }
