@@ -1,4 +1,4 @@
-package task;
+package cassava.task;
 
 public abstract class Task {
     private String description;

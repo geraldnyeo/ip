@@ -1,16 +1,17 @@
-import data.FileFormatException;
-import task.Task;
-import ui.Parser;
-import ui.UI;
+package cassava;
+
+import cassava.data.FileFormatException;
+import cassava.task.Task;
+import cassava.ui.Parser;
+import cassava.ui.UI;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
-import static data.TaskData.getTasks;
-import static data.TaskData.putTasks;
+import static cassava.data.TaskData.getTasks;
+import static cassava.data.TaskData.putTasks;
 
 public class Cassava {
     private static final String name = "Cassava";

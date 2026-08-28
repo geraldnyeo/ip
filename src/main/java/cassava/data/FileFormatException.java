@@ -1,4 +1,4 @@
-package data;
+package cassava.data;
 
 public class FileFormatException extends Exception {
 

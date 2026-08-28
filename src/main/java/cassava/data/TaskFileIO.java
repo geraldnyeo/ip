@@ -1,4 +1,4 @@
-package data;
+package cassava.data;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-package ui;
+package cassava.ui;
 
 import java.util.Scanner;
 

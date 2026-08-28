@@ -1,7 +1,9 @@
-import task.DeadlineTask;
-import task.EventTask;
-import task.Task;
-import task.ToDoTask;
+package cassava;
+
+import cassava.task.DeadlineTask;
+import cassava.task.EventTask;
+import cassava.task.Task;
+import cassava.task.ToDoTask;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -9,7 +11,7 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 
-import static data.TaskData.putTasks;
+import static cassava.data.TaskData.putTasks;
 
 public class Handlers {
 
@@ -30,28 +32,28 @@ public class Handlers {
         return switch (command) {
             case "list" -> handleList(tasks);
             case "todo" -> command_option.isEmpty()
-                    ? handleInvalid("You did not specify a task to add.")
+                    ? handleInvalid("You did not specify a cassava.task to add.")
                     : handleAddTodo(tasks, command_option);
             case "deadline" -> command_option.isEmpty()
-                    ? handleInvalid("You did not specify a task to add.")
+                    ? handleInvalid("You did not specify a cassava.task to add.")
                     : !input_args.containsKey("by")
                     ? handleInvalid("You did not specify a date for the deadline.")
                     : handleAddDeadline(tasks, command_option, input_args.get("by"));
             case "event" -> command_option.isEmpty()
-                    ? handleInvalid("You did not specify a task to add.")
+                    ? handleInvalid("You did not specify a cassava.task to add.")
                     : !input_args.containsKey("from")
                     ? handleInvalid("You did not specify a time for 'from'.")
                     : !input_args.containsKey("to")
                     ? handleInvalid("You did not specify a time for 'to'.")
                     : handleAddEvent(tasks, command_option, input_args.get("from"), input_args.get("to"));
             case "mark" -> command_option.isEmpty()
-                    ? handleInvalid("You did not specify a task to mark.")
+                    ? handleInvalid("You did not specify a cassava.task to mark.")
                     : handleMark(tasks, command_option);
             case "unmark" -> command_option.isEmpty()
-                    ? handleInvalid("You did not specify a task to unmark.")
+                    ? handleInvalid("You did not specify a cassava.task to unmark.")
                     : handleUnmark(tasks, command_option);
             case "delete" -> command_option.isEmpty()
-                    ? handleInvalid("You did not specify a task to delete.")
+                    ? handleInvalid("You did not specify a cassava.task to delete.")
                     : handleDelete(tasks, command_option);
             case "bye" -> handleExit();
             default -> handleInvalid("Sorry, I don't recognise this command.");
@@ -97,7 +99,7 @@ public class Handlers {
         tasks.add(task);
         saveTasks(tasks);
 
-        System.out.println("Added task: " + task.toString());
+        System.out.println("Added cassava.task: " + task.toString());
 
         return false;
     }
@@ -122,7 +124,7 @@ public class Handlers {
         tasks.add(task);
         saveTasks(tasks);
 
-        System.out.println("Added task: " + task.toString());
+        System.out.println("Added cassava.task: " + task.toString());
 
         return false;
     }
@@ -134,7 +136,7 @@ public class Handlers {
         try {
             int index = Integer.parseInt(index_arg) - 1;
             if (index >= tasks.size()) {
-                return handleInvalid("There is no such task, I cannot mark it.");
+                return handleInvalid("There is no such cassava.task, I cannot mark it.");
             }
             tasks.get(index).mark();
             saveTasks(tasks);
@@ -143,7 +145,7 @@ public class Handlers {
 
             return false;
         } catch (NumberFormatException e) {
-            return handleInvalid("Please use only numbers to specify the task you wish to mark.");
+            return handleInvalid("Please use only numbers to specify the cassava.task you wish to mark.");
         }
     }
 
@@ -154,7 +156,7 @@ public class Handlers {
         try {
             int index = Integer.parseInt(index_arg) - 1;
             if (index >= tasks.size()) {
-                return handleInvalid("There is no such task, I cannot unmark it.");
+                return handleInvalid("There is no such cassava.task, I cannot unmark it.");
             }
             tasks.get(index).unmark();
             saveTasks(tasks);
@@ -163,7 +165,7 @@ public class Handlers {
 
             return false;
         } catch (NumberFormatException e) {
-            return handleInvalid("Please use only numbers to specify the task you wish to mark.");
+            return handleInvalid("Please use only numbers to specify the cassava.task you wish to mark.");
         }
     }
 
@@ -174,7 +176,7 @@ public class Handlers {
         try {
             int index = Integer.parseInt(index_arg) - 1;
             if (index >= tasks.size()) {
-                return handleInvalid("There is no such task, I cannot delete it.");
+                return handleInvalid("There is no such cassava.task, I cannot delete it.");
             }
             Task task = tasks.remove(index);
             saveTasks(tasks);
@@ -183,7 +185,7 @@ public class Handlers {
 
             return false;
         } catch (NumberFormatException e) {
-            return handleInvalid("Please use only numbers to specify the task you wish to delete.");
+            return handleInvalid("Please use only numbers to specify the cassava.task you wish to delete.");
         }
     }
 
