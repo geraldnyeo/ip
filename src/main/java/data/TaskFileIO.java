@@ -12,9 +12,16 @@ public class TaskFileIO {
 
     public static Path openOrCreateTaskFile() throws IOException {
         Path path = Paths.get(dataPath);
+        Path parentDirectory = path.getParent();
+
+        if (!Files.exists(parentDirectory)) {
+            Files.createDirectories(parentDirectory);
+        }
+
         if (!Files.exists(path)) {
             Files.createFile(path);
         }
+
         return path;
     }
 
