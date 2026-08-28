@@ -3,8 +3,11 @@ import task.EventTask;
 import task.Task;
 import task.ToDoTask;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
+import static data.TaskData.putTasks;
 
 public class Handlers {
 
@@ -71,6 +74,7 @@ public class Handlers {
     ) {
         Task task = new ToDoTask(description);
         tasks.add(task);
+        saveTasks(tasks);
         System.out.println("Added: " + description);
         return false;
     }
@@ -82,6 +86,7 @@ public class Handlers {
     ) {
         Task task = new DeadlineTask(description, byDate);
         tasks.add(task);
+        saveTasks(tasks);
         System.out.println("Added task: " + task.toString());
         return false;
     }
@@ -94,6 +99,7 @@ public class Handlers {
     ) {
         Task task = new EventTask(description, fromTime, toTime);
         tasks.add(task);
+        saveTasks(tasks);
         System.out.println("Added task: " + task.toString());
         return false;
     }
@@ -108,6 +114,7 @@ public class Handlers {
                 return handleInvalid("There is no such task, I cannot mark it.");
             }
             tasks.get(index).mark();
+            saveTasks(tasks);
 
             System.out.println(tasks.get(index).toString());
 
@@ -127,6 +134,7 @@ public class Handlers {
                 return handleInvalid("There is no such task, I cannot unmark it.");
             }
             tasks.get(index).unmark();
+            saveTasks(tasks);
 
             System.out.println(tasks.get(index).toString());
 
@@ -146,6 +154,7 @@ public class Handlers {
                 return handleInvalid("There is no such task, I cannot delete it.");
             }
             Task task = tasks.remove(index);
+            saveTasks(tasks);
 
             System.out.println(task.toString());
 
@@ -163,6 +172,15 @@ public class Handlers {
     public static boolean handleExit() {
         System.out.println("Bye! See you again soon.");
         return true;
+    }
+
+    private static void saveTasks(List<Task> tasks) {
+        try {
+            putTasks(tasks);
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(1);
+        }
     }
 
 }

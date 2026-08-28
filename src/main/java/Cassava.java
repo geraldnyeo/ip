@@ -38,7 +38,7 @@ public class Cassava {
         tasks.addAll(savedTasks);
     }
 
-    private static void storeTasks() {
+    private static void saveTasks() {
         try {
             putTasks(tasks);
         } catch (IOException e) {
@@ -95,7 +95,6 @@ public class Cassava {
     }
 
     public static void main(String[] args) {
-        // Load tasks from memory
         loadTasks();
 
         printIntro();
@@ -109,6 +108,6 @@ public class Cassava {
             exit = Handlers.handleInput(tasks, input_args, valid_cmds);
         }
 
-        storeTasks();
+        saveTasks();
     }
 }
