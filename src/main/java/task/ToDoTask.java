@@ -2,6 +2,10 @@ package task;
 
 public class ToDoTask extends Task {
 
+    public ToDoTask(String description, boolean completed) {
+        super(description, completed);
+    }
+
     public ToDoTask(String description) {
         super(description);
     }

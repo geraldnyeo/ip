@@ -1,6 +1,11 @@
+import data.FileFormatException;
 import task.Task;
 
+import java.io.IOException;
 import java.util.*;
+
+import static data.TaskData.getTasks;
+import static data.TaskData.putTasks;
 
 public class Cassava {
     private static final List<String> valid_cmds = new ArrayList<String>(
@@ -20,7 +25,29 @@ public class Cassava {
 
     private static final List<Task> tasks = new ArrayList<Task>();
 
-    public static void printIntro() {
+    private static void loadTasks() {
+        List<Task> savedTasks = new ArrayList<>();
+
+        try {
+            savedTasks = getTasks();
+        } catch (IOException | FileFormatException e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+
+        tasks.addAll(savedTasks);
+    }
+
+    private static void saveTasks() {
+        try {
+            putTasks(tasks);
+        } catch (IOException e) {
+            System.out.println(e);
+            System.exit(1);
+        }
+    }
+
+    private static void printIntro() {
         String banner = "  ____                               \n" +
                 " / ___|__ _ ___ ___  __ ___   ____ _\n" +
                 "| |   / _` / __/ __|/ _` \\ \\ / / _` |\n" +
@@ -33,11 +60,11 @@ public class Cassava {
         System.out.println("How can I help you today?");
     }
 
-    public static void printBorder() {
+    private static void printBorder() {
         System.out.println("__________________________________________________");
     }
 
-    public static String scanUserInput() {
+    private static String scanUserInput() {
         Scanner scanner = new Scanner(System.in);
 
         printBorder();
@@ -45,7 +72,7 @@ public class Cassava {
         return input;
     }
 
-    public static HashMap<String, String> parseUserInput(String input) {
+    private static HashMap<String, String> parseUserInput(String input) {
         HashMap<String, String> args = new HashMap<String, String>();
         String[] tokens = input.split("\s");
 
@@ -59,7 +86,7 @@ public class Cassava {
                 param = tokens[i].substring(1);
                 option = new StringBuilder();
             } else {
-                option.append(tokens[i]);
+                option.append(option.isEmpty() ? tokens[i] : " " + tokens[i]);
             }
         }
         args.put(param, option.toString());
@@ -68,6 +95,8 @@ public class Cassava {
     }
 
     public static void main(String[] args) {
+        loadTasks();
+
         printIntro();
 
         boolean exit = false;
@@ -78,5 +107,7 @@ public class Cassava {
             printBorder();
             exit = Handlers.handleInput(tasks, input_args, valid_cmds);
         }
+
+        saveTasks();
     }
 }
