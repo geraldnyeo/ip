@@ -43,7 +43,7 @@ public class TaskData {
         return switch (taskType) {
             case "T" -> new ToDoTask(tokens[2], taskCompleted);
             case "D" -> new DeadlineTask(tokens[2], taskCompleted, LocalDate.parse(tokens[3]));
-            case "E" -> new EventTask(tokens[2], taskCompleted, tokens[3], tokens[4]);
+            case "E" -> new EventTask(tokens[2], taskCompleted, LocalDate.parse(tokens[3]), LocalDate.parse(tokens[4]));
             default -> throw new FileFormatException("Unrecognized Task type: " + taskType);
         };
     }
