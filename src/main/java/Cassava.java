@@ -86,7 +86,7 @@ public class Cassava {
                 param = tokens[i].substring(1);
                 option = new StringBuilder();
             } else {
-                option.append(tokens[i]);
+                option.append(option.isEmpty() ? tokens[i] : " " + tokens[i]);
             }
         }
         args.put(param, option.toString());
