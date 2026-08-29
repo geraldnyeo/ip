@@ -13,6 +13,10 @@ public abstract class Task {
         this(description, false);
     }
 
+    public boolean equals(Task other) {
+        return other.toDataString().equals(this.toDataString());
+    }
+
     @Override
     public String toString() {
         return "[" + getTaskTypeToken() + "] " +
