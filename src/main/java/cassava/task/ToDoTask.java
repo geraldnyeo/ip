@@ -1,5 +1,8 @@
 package cassava.task;
 
+/**
+ * Represents a ToDo-type task.
+ */
 public class ToDoTask extends Task {
 
     public ToDoTask(String description, boolean completed) {

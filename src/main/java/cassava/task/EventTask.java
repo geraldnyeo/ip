@@ -3,6 +3,9 @@ package cassava.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a Event-type task.
+ */
 public class EventTask extends Task {
 
     private LocalDate from;

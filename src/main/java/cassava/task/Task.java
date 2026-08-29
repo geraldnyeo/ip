@@ -1,5 +1,8 @@
 package cassava.task;
 
+/**
+ * Represents a single task item.
+ */
 public abstract class Task {
     private String description;
     private boolean completed;

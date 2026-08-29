@@ -15,8 +15,18 @@ import static cassava.data.TaskFileIO.openOrCreateTaskFile;
 import static cassava.data.TaskFileIO.readTasks;
 import static cassava.data.TaskFileIO.writeTasks;
 
+/**
+ * Handles parsing and formatting of data,
+ * acts as the connection layer between FileIO and the application.
+ */
 public class TaskData {
 
+    /**
+     * Gets the list of tasks from the data file.
+     * @return List of tasks retrieved.
+     * @throws IOException
+     * @throws FileFormatException If the file is corrupted / cannot be parsed.
+     */
     public static List<Task> getTasks() throws IOException, FileFormatException {
         Path path = openOrCreateTaskFile();
         List<String> taskStrings = readTasks(path);
@@ -29,12 +39,23 @@ public class TaskData {
         return tasks;
     }
 
+    /**
+     * Saves the list of tasks to the data file.
+     * @param tasks List of tasks to save.
+     * @throws IOException
+     */
     public static void putTasks(List<Task> tasks) throws IOException {
         Path path = openOrCreateTaskFile();
         List<String> taskStrings = tasks.stream().map(TaskData::mapTaskToString).toList();
         writeTasks(path, taskStrings);
     }
 
+    /**
+     * Parses a line of text from the data file into a Task object.
+     * @param taskString raw text line from data file representing a task.
+     * @return Task object
+     * @throws FileFormatException If the line is corrupted / cannot be parsed.
+     */
     private static Task mapStringToTask(String taskString) throws FileFormatException {
         String[] tokens = taskString.split(" \\| ");
         String taskType = tokens[0];
@@ -48,6 +69,11 @@ public class TaskData {
         };
     }
 
+    /**
+     * Converts a task to its String data representation for storage.
+     * @param task Task object to convert to a String.
+     * @return String data representation of the task.
+     */
     private static String mapTaskToString(Task task) {
         return task.toDataString();
     }
