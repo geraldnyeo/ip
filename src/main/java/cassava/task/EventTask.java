@@ -22,9 +22,9 @@ public class EventTask extends Task {
 
     @Override
     public String toString() {
-        return super.toString() +
-                " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) +
-                " to: " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        return super.toString()
+                + " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
+                + " to: " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 
     public String getTaskTypeToken() {
@@ -33,8 +33,8 @@ public class EventTask extends Task {
 
     @Override
     public String toDataString() {
-        return super.toDataString() + " | " +
-                this.from.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " | " +
-                this.to.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return super.toDataString() + " | "
+                + this.from.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + " | "
+                + this.to.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }

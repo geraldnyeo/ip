@@ -8,10 +8,10 @@ import java.util.List;
 
 public class TaskFileIO {
 
-    public static final String dataPath = "./data/tasks.txt";
+    public static final String DATAPATH = "./data/tasks.txt";
 
     public static Path openOrCreateTaskFile() throws IOException {
-        Path path = Paths.get(dataPath);
+        Path path = Paths.get(DATAPATH);
         Path parentDirectory = path.getParent();
 
         if (!Files.exists(parentDirectory)) {

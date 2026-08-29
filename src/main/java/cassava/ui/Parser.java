@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Parser {
 
-    public static final List<String> valid_cmds = new ArrayList<String>(
+    public static final List<String> VALID_CMDS = new ArrayList<String>(
             Arrays.asList(
                     "list",
                     "todo",

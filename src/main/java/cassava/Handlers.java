@@ -1,9 +1,6 @@
 package cassava;
 
-import cassava.task.DeadlineTask;
-import cassava.task.EventTask;
-import cassava.task.Task;
-import cassava.task.ToDoTask;
+import static cassava.data.TaskData.putTasks;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -11,50 +8,53 @@ import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 
-import static cassava.data.TaskData.putTasks;
+import cassava.task.DeadlineTask;
+import cassava.task.EventTask;
+import cassava.task.Task;
+import cassava.task.ToDoTask;
 
 public class Handlers {
 
     public static boolean handleInput(
             List<Task> tasks,
-            HashMap<String, String> input_args,
-            List<String> valid_cmds
+            HashMap<String, String> inputArgs,
+            List<String> validCmds
     ) {
-        String command = input_args.getOrDefault("command", "");
-        String command_option = input_args.getOrDefault(command, "");
+        String command = inputArgs.getOrDefault("command", "");
+        String commandOption = inputArgs.getOrDefault(command, "");
         if (command.isEmpty()) {
             return handleInvalid("You have not entered any text.");
         }
-        if (!valid_cmds.contains(command)) {
+        if (!validCmds.contains(command)) {
             return handleInvalid("Sorry, I don't recognise this command.");
         }
 
         return switch (command) {
             case "list" -> handleList(tasks);
-            case "todo" -> command_option.isEmpty()
+            case "todo" -> commandOption.isEmpty()
                     ? handleInvalid("You did not specify a cassava.task to add.")
-                    : handleAddTodo(tasks, command_option);
-            case "deadline" -> command_option.isEmpty()
+                    : handleAddTodo(tasks, commandOption);
+            case "deadline" -> commandOption.isEmpty()
                     ? handleInvalid("You did not specify a cassava.task to add.")
-                    : !input_args.containsKey("by")
+                    : !inputArgs.containsKey("by")
                     ? handleInvalid("You did not specify a date for the deadline.")
-                    : handleAddDeadline(tasks, command_option, input_args.get("by"));
-            case "event" -> command_option.isEmpty()
+                    : handleAddDeadline(tasks, commandOption, inputArgs.get("by"));
+            case "event" -> commandOption.isEmpty()
                     ? handleInvalid("You did not specify a cassava.task to add.")
-                    : !input_args.containsKey("from")
+                    : !inputArgs.containsKey("from")
                     ? handleInvalid("You did not specify a time for 'from'.")
-                    : !input_args.containsKey("to")
+                    : !inputArgs.containsKey("to")
                     ? handleInvalid("You did not specify a time for 'to'.")
-                    : handleAddEvent(tasks, command_option, input_args.get("from"), input_args.get("to"));
-            case "mark" -> command_option.isEmpty()
+                    : handleAddEvent(tasks, commandOption, inputArgs.get("from"), inputArgs.get("to"));
+            case "mark" -> commandOption.isEmpty()
                     ? handleInvalid("You did not specify a cassava.task to mark.")
-                    : handleMark(tasks, command_option);
-            case "unmark" -> command_option.isEmpty()
+                    : handleMark(tasks, commandOption);
+            case "unmark" -> commandOption.isEmpty()
                     ? handleInvalid("You did not specify a cassava.task to unmark.")
-                    : handleUnmark(tasks, command_option);
-            case "delete" -> command_option.isEmpty()
+                    : handleUnmark(tasks, commandOption);
+            case "delete" -> commandOption.isEmpty()
                     ? handleInvalid("You did not specify a cassava.task to delete.")
-                    : handleDelete(tasks, command_option);
+                    : handleDelete(tasks, commandOption);
             case "bye" -> handleExit();
             default -> handleInvalid("Sorry, I don't recognise this command.");
         };
@@ -65,8 +65,8 @@ public class Handlers {
             System.out.println("No tasks have been added yet...");
         }
 
-        for (int i = 0; i < tasks.size(); ++i) {
-            System.out.println((i+1) + ". " + tasks.get(i).toString());
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + ". " + tasks.get(i).toString());
         }
 
         return false;
@@ -116,8 +116,8 @@ public class Handlers {
             fromDate = LocalDate.parse(fromDateString);
             toDate = LocalDate.parse(toDateString);
         } catch (DateTimeParseException e) {
-            return handleInvalid("You must input a date in the format 'yyyy-mm-dd' " +
-                    "for the 'from' and 'by arguments.");
+            return handleInvalid("You must input a date in the format 'yyyy-mm-dd' "
+                    + "for the 'from' and 'by arguments.");
         }
 
         Task task = new EventTask(description, fromDate, toDate);
@@ -131,10 +131,10 @@ public class Handlers {
 
     public static boolean handleMark(
             List<Task> tasks,
-            String index_arg
+            String indexArg
     ) {
         try {
-            int index = Integer.parseInt(index_arg) - 1;
+            int index = Integer.parseInt(indexArg) - 1;
             if (index >= tasks.size()) {
                 return handleInvalid("There is no such cassava.task, I cannot mark it.");
             }
@@ -151,10 +151,10 @@ public class Handlers {
 
     public static boolean handleUnmark(
             List<Task> tasks,
-            String index_arg
+            String indexArg
     ) {
         try {
-            int index = Integer.parseInt(index_arg) - 1;
+            int index = Integer.parseInt(indexArg) - 1;
             if (index >= tasks.size()) {
                 return handleInvalid("There is no such cassava.task, I cannot unmark it.");
             }
@@ -171,10 +171,10 @@ public class Handlers {
 
     public static boolean handleDelete(
             List<Task> tasks,
-            String index_arg
+            String indexArg
     ) {
         try {
-            int index = Integer.parseInt(index_arg) - 1;
+            int index = Integer.parseInt(indexArg) - 1;
             if (index >= tasks.size()) {
                 return handleInvalid("There is no such cassava.task, I cannot delete it.");
             }

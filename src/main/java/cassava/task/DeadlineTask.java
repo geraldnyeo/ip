@@ -19,8 +19,8 @@ public class DeadlineTask extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " (by: " +
-                this.date.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+        return super.toString()
+                + " (by: " + this.date.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 
     @Override
@@ -30,7 +30,7 @@ public class DeadlineTask extends Task {
 
     @Override
     public String toDataString() {
-        return super.toDataString() + " | " +
-                this.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return super.toDataString() + " | "
+                + this.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }
