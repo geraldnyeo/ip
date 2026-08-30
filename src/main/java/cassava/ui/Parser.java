@@ -14,6 +14,7 @@ public class Parser {
     public static final List<String> VALID_CMDS = new ArrayList<String>(
             Arrays.asList(
                     "list",
+                    "find",
                     "todo",
                     "deadline",
                     "event",

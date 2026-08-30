@@ -46,6 +46,9 @@ public class Handlers {
 
         return switch (command) {
             case "list" -> handleList(tasks);
+            case "find" -> commandOption.isEmpty()
+                    ? handleInvalid("You did not specify a search term to find.")
+                    : handleFind(tasks, commandOption);
             case "todo" -> commandOption.isEmpty()
                     ? handleInvalid("You did not specify a cassava.task to add.")
                     : handleAddTodo(tasks, commandOption);
@@ -87,6 +90,30 @@ public class Handlers {
 
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + ". " + tasks.get(i).toString());
+        }
+
+        return false;
+    }
+
+    /**
+     * Filters and prints tasks according to the search term.
+     * @param tasks List of tasks to search from.
+     * @param search Search term to search for.
+     * @return true If program should exit command loop Else false.
+     */
+    public static boolean handleFind(List<Task> tasks, String search) {
+        List<Task> filtered = tasks.stream()
+                .filter(s -> s.getDescription().contains(search))
+                .toList();
+
+        if (filtered.isEmpty()) {
+            System.out.println("No tasks were found...");
+        } else {
+            System.out.println("Here are the matching tasks I found:");
+        }
+
+        for (int i = 0; i < filtered.size(); ++i) {
+            System.out.println((i + 1) + ". " + filtered.get(i).toString());
         }
 
         return false;
