@@ -2,8 +2,15 @@ package cassava.ui;
 
 import java.util.Scanner;
 
+/**
+ * Handles input and output to the console.
+ */
 public class UI {
 
+    /**
+     * Prints the banner and introduction text.
+     * @param name Name of the program.
+     */
     public static void printIntro(String name) {
         String banner = "  ____                               \n" +
                 " / ___|__ _ ___ ___  __ ___   ____ _\n" +
@@ -17,10 +24,17 @@ public class UI {
         System.out.println("How can I help you today?");
     }
 
+    /**
+     * Prints a border to separate commands and responses.
+     */
     public static void printBorder() {
         System.out.println("__________________________________________________");
     }
 
+    /**
+     * Scans user input.
+     * @return raw user input as a String.
+     */
     public static String scanUserInput() {
         Scanner scanner = new Scanner(System.in);
 

@@ -13,6 +13,11 @@ import java.util.List;
 import static cassava.data.TaskData.getTasks;
 import static cassava.data.TaskData.putTasks;
 
+/**
+ * Prompts the user to add, update or delete tasks.
+ * Tasks can be marked as completed.
+ * Tasks are saved in a text file after each update, and when the program exits.
+ */
 public class Cassava {
     private static final String name = "Cassava";
 

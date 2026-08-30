@@ -3,6 +3,9 @@ package cassava.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a Deadline-type task.
+ */
 public class DeadlineTask extends Task {
 
     private LocalDate date;

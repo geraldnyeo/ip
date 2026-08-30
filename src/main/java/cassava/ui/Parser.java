@@ -5,8 +5,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Parses user input, extracting the commands, parameters,
+ * and their respective input arguments.
+ */
 public class Parser {
 
+    /** List of allowed commands. */
     public static final List<String> valid_cmds = new ArrayList<String>(
             Arrays.asList(
                     "list",
@@ -20,6 +25,13 @@ public class Parser {
             )
     );
 
+    /**
+     * Parses user input, extracting the command, parameters,
+     * and their respective input arguments into a HashMap.
+     * @param input raw user input as a String.
+     * @return HashMap storing the parameters and respective arguments as key-value pairs.
+     *         The command is stored in the "command" key.
+     */
     public static HashMap<String, String> parseUserInput(String input) {
         HashMap<String, String> args = new HashMap<String, String>();
         String[] tokens = input.split("\s");
