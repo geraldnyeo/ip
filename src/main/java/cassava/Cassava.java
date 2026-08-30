@@ -1,17 +1,17 @@
 package cassava;
 
-import cassava.data.FileFormatException;
-import cassava.task.Task;
-import cassava.ui.Parser;
-import cassava.ui.UI;
+import static cassava.data.TaskData.getTasks;
+import static cassava.data.TaskData.putTasks;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static cassava.data.TaskData.getTasks;
-import static cassava.data.TaskData.putTasks;
+import cassava.data.FileFormatException;
+import cassava.task.Task;
+import cassava.ui.Parser;
+import cassava.ui.UI;
 
 /**
  * Prompts the user to add, update or delete tasks.
@@ -53,10 +53,10 @@ public class Cassava {
         boolean exit = false;
         while (!exit) {
             String input = UI.scanUserInput();
-            HashMap<String, String> input_args = Parser.parseUserInput(input);
+            HashMap<String, String> inputArgs = Parser.parseUserInput(input);
 
             UI.printBorder();
-            exit = Handlers.handleInput(tasks, input_args, Parser.valid_cmds);
+            exit = Handlers.handleInput(tasks, inputArgs, Parser.VALID_CMDS);
         }
 
         saveTasks();

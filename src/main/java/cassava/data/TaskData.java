@@ -1,9 +1,8 @@
 package cassava.data;
 
-import cassava.task.DeadlineTask;
-import cassava.task.EventTask;
-import cassava.task.Task;
-import cassava.task.ToDoTask;
+import static cassava.data.TaskFileIO.openOrCreateTaskFile;
+import static cassava.data.TaskFileIO.readTasks;
+import static cassava.data.TaskFileIO.writeTasks;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -11,9 +10,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cassava.data.TaskFileIO.openOrCreateTaskFile;
-import static cassava.data.TaskFileIO.readTasks;
-import static cassava.data.TaskFileIO.writeTasks;
+import cassava.task.DeadlineTask;
+import cassava.task.EventTask;
+import cassava.task.Task;
+import cassava.task.ToDoTask;
 
 /**
  * Handles parsing and formatting of data,

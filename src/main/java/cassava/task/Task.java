@@ -22,16 +22,16 @@ public abstract class Task {
 
     @Override
     public String toString() {
-        return "[" + getTaskTypeToken() + "] " +
-                "[" + (completed ? "X" : " ") + "] " +
-                description;
+        return "[" + getTaskTypeToken() + "] "
+                + "[" + (completed ? "X" : " ") + "] "
+                + description;
     }
 
     public abstract String getTaskTypeToken();
 
     public String toDataString() {
         return this.getTaskTypeToken() + " | "
-                + (this.completed ? "1": "0") +  " | "
+                + (this.completed ? "1" : "0") + " | "
                 + this.description;
     }
 
