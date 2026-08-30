@@ -32,6 +32,10 @@ public abstract class Task {
                 + this.description;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
     public void mark() {
         this.completed = true;
     }

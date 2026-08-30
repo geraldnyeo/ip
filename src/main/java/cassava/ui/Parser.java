@@ -10,6 +10,7 @@ public class Parser {
     public static final List<String> valid_cmds = new ArrayList<String>(
             Arrays.asList(
                     "list",
+                    "find",
                     "todo",
                     "deadline",
                     "event",
