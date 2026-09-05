@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import cassava.data.FileFormatException;
+import cassava.gui.MainWindow;
 import cassava.task.Task;
 
 /**
@@ -54,6 +55,8 @@ public class Cassava extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Cassava.class.getResource("/views/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+
+            fxmlLoader.<MainWindow>getController().setTasks(tasks);
 
             stage.setScene(scene);
             stage.show();
