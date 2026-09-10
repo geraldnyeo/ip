@@ -235,7 +235,7 @@ public class Handlers {
     ) {
         int index = parseIndex(mainWindow, indexArg, tasks.size());
         if (index == -1) {
-            return true;
+            return false; // exit immediately
         }
         tasks.get(index).mark();
         saveTasks(tasks);
@@ -259,7 +259,7 @@ public class Handlers {
     ) {
         int index = parseIndex(mainWindow, indexArg, tasks.size());
         if (index == -1) {
-            return true;
+            return false; // exit immediately
         }
 
         tasks.get(index).unmark();
@@ -284,7 +284,7 @@ public class Handlers {
     ) {
         int index = parseIndex(mainWindow, indexArg, tasks.size());
         if (index == -1) {
-            return true;
+            return false; // exit immediately
         }
 
         Task task = tasks.remove(index);
@@ -347,12 +347,12 @@ public class Handlers {
         try {
             int index = Integer.parseInt(indexArg) - 1;
             if (index >= tasksSize) {
-                handleInvalid(mainWindow, "There is no such Task, I cannot delete it.");
+                handleInvalid(mainWindow, "There is no such Task.");
                 return -1;
             }
             return index;
         } catch (NumberFormatException e) {
-            handleInvalid(mainWindow, "Please use only numbers to specify the cassava.task you wish to delete.");
+            handleInvalid(mainWindow, "Please use only numbers to specify the cassava.task you wish to operate on.");
             return -1;
         }
     }
