@@ -38,6 +38,9 @@ public class Handlers {
             HashMap<String, String> inputArgs,
             List<String> validCmds
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         String command = inputArgs.getOrDefault("command", "");
         String commandOption = inputArgs.getOrDefault(command, "");
 
@@ -92,6 +95,9 @@ public class Handlers {
             MainWindow mainWindow,
             List<Task> tasks
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         if (tasks.isEmpty()) {
             mainWindow.addCassavaDialog("No tasks have been added yet...");
         }
@@ -115,6 +121,9 @@ public class Handlers {
             List<Task> tasks,
             String search
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         List<Task> filtered = tasks.stream()
                 .filter(s -> s.getDescription().contains(search))
                 .toList();
@@ -144,6 +153,9 @@ public class Handlers {
             List<Task> tasks,
             String description
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         Task task = new ToDoTask(description);
         tasks.add(task);
         saveTasks(tasks);
@@ -168,6 +180,9 @@ public class Handlers {
             String description,
             String byDateString
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         LocalDate byDate = LocalDate.now();
         try {
             byDate = LocalDate.parse(byDateString);
@@ -202,6 +217,9 @@ public class Handlers {
             String fromDateString,
             String toDateString
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         LocalDate fromDate = LocalDate.now();
         LocalDate toDate = LocalDate.now();
         try {
@@ -233,6 +251,9 @@ public class Handlers {
             List<Task> tasks,
             String indexArg
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         int index = parseIndex(mainWindow, indexArg, tasks.size());
         if (index == -1) {
             return false; // exit immediately
@@ -257,6 +278,9 @@ public class Handlers {
             List<Task> tasks,
             String indexArg
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         int index = parseIndex(mainWindow, indexArg, tasks.size());
         if (index == -1) {
             return false; // exit immediately
@@ -282,6 +306,9 @@ public class Handlers {
             List<Task> tasks,
             String indexArg
     ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
         int index = parseIndex(mainWindow, indexArg, tasks.size());
         if (index == -1) {
             return false; // exit immediately
@@ -305,6 +332,8 @@ public class Handlers {
             MainWindow mainWindow,
             String msg
     ) {
+        assert mainWindow != null;
+
         mainWindow.addCassavaDialog(msg);
         return false;
     }
@@ -315,6 +344,8 @@ public class Handlers {
      * @return true; the program should exit here
      */
     public static boolean handleExit(MainWindow mainWindow) {
+        assert mainWindow != null;
+
         mainWindow.addCassavaDialog("Bye! See you again soon.");
         return true;
     }
@@ -324,6 +355,8 @@ public class Handlers {
      * @param tasks List of tasks to be saved.
      */
     private static void saveTasks(List<Task> tasks) {
+        assert tasks != null;
+
         try {
             putTasks(tasks);
         } catch (IOException e) {
