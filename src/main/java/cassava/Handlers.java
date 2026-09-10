@@ -40,6 +40,7 @@ public class Handlers {
     ) {
         String command = inputArgs.getOrDefault("command", "");
         String commandOption = inputArgs.getOrDefault(command, "");
+
         if (command.isEmpty()) {
             return handleInvalid(mainWindow, "You have not entered any text.");
         }
@@ -232,20 +233,16 @@ public class Handlers {
             List<Task> tasks,
             String indexArg
     ) {
-        try {
-            int index = Integer.parseInt(indexArg) - 1;
-            if (index >= tasks.size()) {
-                return handleInvalid(mainWindow, "There is no such cassava.task, I cannot mark it.");
-            }
-            tasks.get(index).mark();
-            saveTasks(tasks);
-
-            mainWindow.addCassavaDialog(tasks.get(index).toString());
-
-            return false;
-        } catch (NumberFormatException e) {
-            return handleInvalid(mainWindow, "Please use only numbers to specify the cassava.task you wish to mark.");
+        int index = parseIndex(mainWindow, indexArg, tasks.size());
+        if (index == -1) {
+            return true;
         }
+        tasks.get(index).mark();
+        saveTasks(tasks);
+
+        mainWindow.addCassavaDialog(tasks.get(index).toString());
+
+        return false;
     }
 
     /**
@@ -260,20 +257,17 @@ public class Handlers {
             List<Task> tasks,
             String indexArg
     ) {
-        try {
-            int index = Integer.parseInt(indexArg) - 1;
-            if (index >= tasks.size()) {
-                return handleInvalid(mainWindow, "There is no such cassava.task, I cannot unmark it.");
-            }
-            tasks.get(index).unmark();
-            saveTasks(tasks);
-
-            mainWindow.addCassavaDialog(tasks.get(index).toString());
-
-            return false;
-        } catch (NumberFormatException e) {
-            return handleInvalid(mainWindow, "Please use only numbers to specify the cassava.task you wish to mark.");
+        int index = parseIndex(mainWindow, indexArg, tasks.size());
+        if (index == -1) {
+            return true;
         }
+
+        tasks.get(index).unmark();
+        saveTasks(tasks);
+
+        mainWindow.addCassavaDialog(tasks.get(index).toString());
+
+        return false;
     }
 
     /**
@@ -288,20 +282,17 @@ public class Handlers {
             List<Task> tasks,
             String indexArg
     ) {
-        try {
-            int index = Integer.parseInt(indexArg) - 1;
-            if (index >= tasks.size()) {
-                return handleInvalid(mainWindow, "There is no such Task, I cannot delete it.");
-            }
-            Task task = tasks.remove(index);
-            saveTasks(tasks);
-
-            mainWindow.addCassavaDialog(task.toString());
-
-            return false;
-        } catch (NumberFormatException e) {
-            return handleInvalid(mainWindow, "Please use only numbers to specify the cassava.task you wish to delete.");
+        int index = parseIndex(mainWindow, indexArg, tasks.size());
+        if (index == -1) {
+            return true;
         }
+
+        Task task = tasks.remove(index);
+        saveTasks(tasks);
+
+        mainWindow.addCassavaDialog(task.toString());
+
+        return false;
     }
 
     /**
@@ -338,6 +329,31 @@ public class Handlers {
         } catch (IOException e) {
             System.out.println(e);
             System.exit(1);
+        }
+    }
+
+    /**
+     * Parses an input String argument into an integer.
+     * @param mainWindow Reference to mainWindow for executing UI functions.
+     * @param indexArg Index of the task in the list to access.
+     * @param tasksSize Size of task list.
+     * @return -1 If unable to parse Else index of the task in the list.
+     */
+    private static int parseIndex(
+            MainWindow mainWindow,
+            String indexArg,
+            int tasksSize
+    ) {
+        try {
+            int index = Integer.parseInt(indexArg) - 1;
+            if (index >= tasksSize) {
+                handleInvalid(mainWindow, "There is no such Task, I cannot delete it.");
+                return -1;
+            }
+            return index;
+        } catch (NumberFormatException e) {
+            handleInvalid(mainWindow, "Please use only numbers to specify the cassava.task you wish to delete.");
+            return -1;
         }
     }
 
