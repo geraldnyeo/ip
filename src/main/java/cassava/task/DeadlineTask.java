@@ -10,8 +10,13 @@ public class DeadlineTask extends Task {
 
     private LocalDate date;
 
-    public DeadlineTask(String description, boolean completed, LocalDate date) {
-        super(description, completed);
+    public DeadlineTask(
+            String description,
+            boolean completed,
+            TaskPriority taskPriority,
+            LocalDate date
+    ) {
+        super(description, completed, taskPriority);
         this.date = date;
     }
 

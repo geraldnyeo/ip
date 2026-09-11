@@ -60,11 +60,12 @@ public class TaskData {
         String[] tokens = taskString.split(" \\| ");
         String taskType = tokens[0];
         boolean taskCompleted = tokens[1].equals("1");
+        Task.TaskPriority taskPriority = Task.stringToTaskPriority(tokens[3]);
 
         return switch (taskType) {
-            case "T" -> new ToDoTask(tokens[2], taskCompleted);
-            case "D" -> new DeadlineTask(tokens[2], taskCompleted, LocalDate.parse(tokens[3]));
-            case "E" -> new EventTask(tokens[2], taskCompleted, LocalDate.parse(tokens[3]), LocalDate.parse(tokens[4]));
+            case "T" -> new ToDoTask(tokens[2], taskCompleted, taskPriority);
+            case "D" -> new DeadlineTask(tokens[2], taskCompleted, taskPriority, LocalDate.parse(tokens[3]));
+            case "E" -> new EventTask(tokens[2], taskCompleted, taskPriority, LocalDate.parse(tokens[3]), LocalDate.parse(tokens[4]));
             default -> throw new FileFormatException("Unrecognized Task type: " + taskType);
         };
     }

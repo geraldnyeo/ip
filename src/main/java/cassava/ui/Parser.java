@@ -20,6 +20,7 @@ public class Parser {
                     "event",
                     "mark",
                     "unmark",
+                    "prioritise",
                     "delete",
                     "bye"
             )

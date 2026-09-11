@@ -1,6 +1,7 @@
 package cassava;
 
 import static cassava.data.TaskData.putTasks;
+import static cassava.task.Task.stringToTaskPriority;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -57,10 +58,10 @@ public class Handlers {
                     ? handleInvalid(mainWindow, "You did not specify a search term to find.")
                     : handleFind(mainWindow, tasks, commandOption);
             case "todo" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow,"You did not specify a cassava.task to add.")
+                    ? handleInvalid(mainWindow,"You did not specify a task to add.")
                     : handleAddTodo(mainWindow, tasks, commandOption);
             case "deadline" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a cassava.task to add.")
+                    ? handleInvalid(mainWindow, "You did not specify a task to add.")
                     : !inputArgs.containsKey("by")
                     ? handleInvalid(mainWindow, "You did not specify a date for the deadline.")
                     : handleAddDeadline(mainWindow, tasks, commandOption, inputArgs.get("by"));
@@ -72,13 +73,18 @@ public class Handlers {
                     ? handleInvalid(mainWindow, "You did not specify a time for 'to'.")
                     : handleAddEvent(mainWindow, tasks, commandOption, inputArgs.get("from"), inputArgs.get("to"));
             case "mark" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a cassava.task to mark.")
+                    ? handleInvalid(mainWindow, "You did not specify a task to mark.")
                     : handleMark(mainWindow, tasks, commandOption);
             case "unmark" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a cassava.task to unmark.")
+                    ? handleInvalid(mainWindow, "You did not specify a task to unmark.")
                     : handleUnmark(mainWindow, tasks, commandOption);
+            case "prioritise" -> commandOption.isEmpty()
+                    ? handleInvalid(mainWindow, "You did not specify a task to prioritise.")
+                    : !inputArgs.containsKey("level")
+                    ? handleInvalid(mainWindow, "You did not specify a priority level to set.")
+                    : handlePrioritise(mainWindow, tasks, commandOption, inputArgs.get("level"));
             case "delete" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a cassava.task to delete.")
+                    ? handleInvalid(mainWindow, "You did not specify a task to delete.")
                     : handleDelete(mainWindow, tasks, commandOption);
             case "bye" -> handleExit(mainWindow);
             default -> handleInvalid(mainWindow, "Sorry, I don't recognise this command.");
@@ -287,6 +293,43 @@ public class Handlers {
         }
 
         tasks.get(index).unmark();
+        saveTasks(tasks);
+
+        mainWindow.addCassavaDialog(tasks.get(index).toString());
+
+        return false;
+    }
+
+    /**
+     * Sets the priority level for a task.
+     * @param mainWindow Reference to mainWindow for executing UI functions.
+     * @param tasks List of tasks to update.
+     * @param indexArg Index of the task in the list to mark as incomplete.
+     * @param taskPriorityString Priority level to set the task to.
+     * @return true If program should exit command loop Else false.
+     */
+    public static boolean handlePrioritise(
+            MainWindow mainWindow,
+            List<Task> tasks,
+            String indexArg,
+            String taskPriorityString
+    ) {
+        assert mainWindow != null;
+        assert tasks != null;
+
+        int index = parseIndex(mainWindow, indexArg, tasks.size());
+        if (index == -1) {
+            return false; // exit immediately
+        }
+
+        if (!taskPriorityString.equals("high")
+            && !taskPriorityString.equals("medium")
+            && !taskPriorityString.equals("low")) {
+            return handleInvalid(mainWindow, "Priority level must be one of: "
+                    + "'high', 'medium', or 'low'.");
+        }
+
+        tasks.get(index).setTaskPriority(stringToTaskPriority(taskPriorityString));
         saveTasks(tasks);
 
         mainWindow.addCassavaDialog(tasks.get(index).toString());
