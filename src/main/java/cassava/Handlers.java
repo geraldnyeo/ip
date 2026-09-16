@@ -106,11 +106,17 @@ public class Handlers {
 
         if (tasks.isEmpty()) {
             mainWindow.addCassavaDialog("No tasks have been added yet...");
+            return false;
         }
 
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < tasks.size(); i++) {
-            mainWindow.addCassavaDialog((i + 1) + ". " + tasks.get(i).toString());
+            if (i > 0) {
+                sb.append("\n");
+            }
+            sb.append(i + 1).append(". ").append(tasks.get(i).toString());
         }
+        mainWindow.addCassavaDialog(sb.toString());
 
         return false;
     }
@@ -136,13 +142,17 @@ public class Handlers {
 
         if (filtered.isEmpty()) {
             mainWindow.addCassavaDialog("No tasks were found...");
-        } else {
-            mainWindow.addCassavaDialog("Here are the matching tasks I found:");
+            return false;
         }
 
+        StringBuilder sb = new StringBuilder("Here are the matching tasks I found:\n");
         for (int i = 0; i < filtered.size(); ++i) {
-            mainWindow.addCassavaDialog((i + 1) + ". " + filtered.get(i).toString());
+            if (i > 0) {
+                sb.append("\n");
+            }
+            sb.append(i + 1).append(". ").append(filtered.get(i).toString());
         }
+        mainWindow.addCassavaDialog(sb.toString());
 
         return false;
     }
