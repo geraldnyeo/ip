@@ -61,4 +61,8 @@ public class MainWindow {
     public void addCassavaDialog(String input) {
         dialogContainer.getChildren().add(DialogBox.getCassavaDialog(input));
     }
+
+    public void addErrorDialog(String input) {
+        dialogContainer.getChildren().add(DialogBox.getErrorDialog(input));
+    }
 }

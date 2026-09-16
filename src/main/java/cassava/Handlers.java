@@ -387,7 +387,7 @@ public class Handlers {
     ) {
         assert mainWindow != null;
 
-        mainWindow.addCassavaDialog(msg);
+        mainWindow.addErrorDialog(msg);
         return false;
     }
 
