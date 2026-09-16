@@ -12,11 +12,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import cassava.task.Task;
 
 public class MainWindow {
+    @FXML
+    private AnchorPane rootPane;
     @FXML
     private TextField userInput;
     @FXML
@@ -25,6 +29,8 @@ public class MainWindow {
     private ScrollPane scrollPane;
     @FXML
     private VBox dialogContainer;
+    @FXML
+    private ToggleButton darkModeToggle;
 
     private List<Task> tasks;
 
@@ -54,11 +60,27 @@ public class MainWindow {
         }
     }
 
+    @FXML
+    private void handleToggleDarkMode() {
+        boolean isDark = darkModeToggle.isSelected();
+        if (isDark) {
+            rootPane.getStyleClass().add("dark-mode");
+            darkModeToggle.setText("☀");
+        } else {
+            rootPane.getStyleClass().remove("dark-mode");
+            darkModeToggle.setText("🌙");
+        }
+    }
+
     private void addUserDialog(String input) {
         dialogContainer.getChildren().add(DialogBox.getUserDialog(input));
     }
 
     public void addCassavaDialog(String input) {
         dialogContainer.getChildren().add(DialogBox.getCassavaDialog(input));
+    }
+
+    public void addErrorDialog(String input) {
+        dialogContainer.getChildren().add(DialogBox.getErrorDialog(input));
     }
 }

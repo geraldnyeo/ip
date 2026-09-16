@@ -66,7 +66,7 @@ public class Handlers {
                     ? handleInvalid(mainWindow, "You did not specify a date for the deadline.")
                     : handleAddDeadline(mainWindow, tasks, commandOption, inputArgs.get("by"));
             case "event" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a cassava.task to add.")
+                    ? handleInvalid(mainWindow, "You did not specify a task to add.")
                     : !inputArgs.containsKey("from")
                     ? handleInvalid(mainWindow, "You did not specify a time for 'from'.")
                     : !inputArgs.containsKey("to")
@@ -106,11 +106,17 @@ public class Handlers {
 
         if (tasks.isEmpty()) {
             mainWindow.addCassavaDialog("No tasks have been added yet...");
+            return false;
         }
 
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < tasks.size(); i++) {
-            mainWindow.addCassavaDialog((i + 1) + ". " + tasks.get(i).toString());
+            if (i > 0) {
+                sb.append("\n");
+            }
+            sb.append(i + 1).append(". ").append(tasks.get(i).toString());
         }
+        mainWindow.addCassavaDialog(sb.toString());
 
         return false;
     }
@@ -136,13 +142,17 @@ public class Handlers {
 
         if (filtered.isEmpty()) {
             mainWindow.addCassavaDialog("No tasks were found...");
-        } else {
-            mainWindow.addCassavaDialog("Here are the matching tasks I found:");
+            return false;
         }
 
+        StringBuilder sb = new StringBuilder("Here are the matching tasks I found:\n");
         for (int i = 0; i < filtered.size(); ++i) {
-            mainWindow.addCassavaDialog((i + 1) + ". " + filtered.get(i).toString());
+            if (i > 0) {
+                sb.append("\n");
+            }
+            sb.append(i + 1).append(". ").append(filtered.get(i).toString());
         }
+        mainWindow.addCassavaDialog(sb.toString());
 
         return false;
     }
@@ -200,7 +210,7 @@ public class Handlers {
         tasks.add(task);
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog("Added cassava.task: " + task.toString());
+        mainWindow.addCassavaDialog("Added: " + task.toString());
 
         return false;
     }
@@ -240,7 +250,7 @@ public class Handlers {
         tasks.add(task);
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog("Added cassava.task: " + task.toString());
+        mainWindow.addCassavaDialog("Added: " + task.toString());
 
         return false;
     }
@@ -377,7 +387,7 @@ public class Handlers {
     ) {
         assert mainWindow != null;
 
-        mainWindow.addCassavaDialog(msg);
+        mainWindow.addErrorDialog(msg);
         return false;
     }
 
@@ -428,7 +438,7 @@ public class Handlers {
             }
             return index;
         } catch (NumberFormatException e) {
-            handleInvalid(mainWindow, "Please use only numbers to specify the cassava.task you wish to operate on.");
+            handleInvalid(mainWindow, "Please use only numbers to specify the task you wish to operate on.");
             return -1;
         }
     }
