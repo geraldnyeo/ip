@@ -55,10 +55,11 @@ public class Cassava extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Cassava.class.getResource("/views/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
-
-            fxmlLoader.<MainWindow>getController().setTasks(tasks);
-
+            MainWindow controller = fxmlLoader.<MainWindow>getController();
+            controller.setTasks(tasks);
             stage.setScene(scene);
+            stage.setResizable(true);
+            stage.setTitle(name);
             stage.show();
         } catch (IOException e) {
             System.out.println(e);

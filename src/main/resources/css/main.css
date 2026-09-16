@@ -47,3 +47,17 @@
     -fx-border-color: #ef476f;
     -fx-text-fill: #ef476f;
 }
+
+#fullscreenToggle {
+    -fx-background-color: transparent;
+    -fx-border-color: #d62839;
+    -fx-border-width: 2px;
+    -fx-border-radius: 1em;
+    -fx-background-radius: 1em;
+    -fx-text-fill: #d62839;
+}
+
+.dark-mode #fullscreenToggle {
+    -fx-border-color: #ef476f;
+    -fx-text-fill: #ef476f;
+}
