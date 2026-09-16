@@ -66,7 +66,7 @@ public class Handlers {
                     ? handleInvalid(mainWindow, "You did not specify a date for the deadline.")
                     : handleAddDeadline(mainWindow, tasks, commandOption, inputArgs.get("by"));
             case "event" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a cassava.task to add.")
+                    ? handleInvalid(mainWindow, "You did not specify a task to add.")
                     : !inputArgs.containsKey("from")
                     ? handleInvalid(mainWindow, "You did not specify a time for 'from'.")
                     : !inputArgs.containsKey("to")
@@ -210,7 +210,7 @@ public class Handlers {
         tasks.add(task);
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog("Added cassava.task: " + task.toString());
+        mainWindow.addCassavaDialog("Added: " + task.toString());
 
         return false;
     }
@@ -250,7 +250,7 @@ public class Handlers {
         tasks.add(task);
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog("Added cassava.task: " + task.toString());
+        mainWindow.addCassavaDialog("Added: " + task.toString());
 
         return false;
     }
@@ -438,7 +438,7 @@ public class Handlers {
             }
             return index;
         } catch (NumberFormatException e) {
-            handleInvalid(mainWindow, "Please use only numbers to specify the cassava.task you wish to operate on.");
+            handleInvalid(mainWindow, "Please use only numbers to specify the task you wish to operate on.");
             return -1;
         }
     }
