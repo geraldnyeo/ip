@@ -22,17 +22,27 @@ import cassava.task.ToDoTask;
 public class TaskData {
 
     /**
-     * Gets the list of tasks from the data file.
+     * Gets the list of tasks from the default data file.
      * @return List of tasks retrieved.
      * @throws IOException
      * @throws FileFormatException If the file is corrupted / cannot be parsed.
      */
     public static List<Task> getTasks() throws IOException, FileFormatException {
-        Path path = openOrCreateTaskFile();
+        return getTasks(openOrCreateTaskFile());
+    }
+
+    /**
+     * Gets the list of tasks from the given data file.
+     * @param path Path object representing the data file.
+     * @return List of tasks retrieved.
+     * @throws IOException
+     * @throws FileFormatException If the file is corrupted / cannot be parsed.
+     */
+    public static List<Task> getTasks(Path path) throws IOException, FileFormatException {
         List<String> taskStrings = readTasks(path);
 
         List<Task> tasks = new ArrayList<>();
-        for (String taskString: taskStrings) {
+        for (String taskString : taskStrings) {
             tasks.add(mapStringToTask(taskString));
         }
 
@@ -40,12 +50,21 @@ public class TaskData {
     }
 
     /**
-     * Saves the list of tasks to the data file.
+     * Saves the list of tasks to the default data file.
      * @param tasks List of tasks to save.
      * @throws IOException
      */
     public static void putTasks(List<Task> tasks) throws IOException {
-        Path path = openOrCreateTaskFile();
+        putTasks(tasks, openOrCreateTaskFile());
+    }
+
+    /**
+     * Saves the list of tasks to the given data file.
+     * @param tasks List of tasks to save.
+     * @param path Path object representing the data file.
+     * @throws IOException
+     */
+    public static void putTasks(List<Task> tasks, Path path) throws IOException {
         List<String> taskStrings = tasks.stream().map(TaskData::mapTaskToString).toList();
         writeTasks(path, taskStrings);
     }
@@ -64,8 +83,9 @@ public class TaskData {
 
         return switch (taskType) {
             case "T" -> new ToDoTask(tokens[2], taskCompleted, taskPriority);
-            case "D" -> new DeadlineTask(tokens[2], taskCompleted, taskPriority, LocalDate.parse(tokens[3]));
-            case "E" -> new EventTask(tokens[2], taskCompleted, taskPriority, LocalDate.parse(tokens[3]), LocalDate.parse(tokens[4]));
+            case "D" -> new DeadlineTask(tokens[2], taskCompleted, taskPriority, LocalDate.parse(tokens[4]));
+            case "E" -> new EventTask(tokens[2], taskCompleted, taskPriority,
+                    LocalDate.parse(tokens[4]), LocalDate.parse(tokens[5]));
             default -> throw new FileFormatException("Unrecognized Task type: " + taskType);
         };
     }

@@ -375,19 +375,14 @@ public class Handlers {
      * @param tasksSize Size of task list.
      * @return -1 If unable to parse Else index of the task in the list.
      */
-    private static int parseIndex(
-            String indexArg,
-            int tasksSize
-    ) {
+    private static int parseIndex(String indexArg, int tasksSize) {
         try {
             int index = Integer.parseInt(indexArg) - 1;
-            if (index >= tasksSize) {
-                handleInvalid("There is no such Task.");
+            if (index < 0 || index >= tasksSize) {
                 return -1;
             }
             return index;
         } catch (NumberFormatException e) {
-            handleInvalid("Please use only numbers to specify the task you wish to operate on.");
             return -1;
         }
     }

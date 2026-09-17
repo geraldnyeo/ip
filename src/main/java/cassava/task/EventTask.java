@@ -36,6 +36,7 @@ public class EventTask extends Task {
                 + " to: " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 
+    @Override
     public String getTaskTypeToken() {
         return "E";
     }

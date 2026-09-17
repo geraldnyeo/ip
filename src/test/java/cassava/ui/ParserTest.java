@@ -62,4 +62,29 @@ public class ParserTest {
         assertEquals(expected, args);
     }
 
+    @Test
+    public void testParseUserInput_multipleParams() {
+        HashMap<String, String> expected = new HashMap<String, String>() {{
+            put("command", "event");
+            put("event", "project meeting");
+            put("from", "2026-08-28");
+            put("to", "2026-08-29");
+        }};
+        HashMap<String, String> args = Parser.parseUserInput(
+                "event project meeting \\from 2026-08-28 \\to 2026-08-29");
+        assertEquals(expected, args);
+    }
+
+    @Test
+    public void testParseUserInput_paramWithMultiWordArgs() {
+        HashMap<String, String> expected = new HashMap<String, String>() {{
+            put("command", "deadline");
+            put("deadline", "finish assignment");
+            put("by", "next monday afternoon");
+        }};
+        HashMap<String, String> args = Parser.parseUserInput(
+                "deadline finish assignment \\by next monday afternoon");
+        assertEquals(expected, args);
+    }
+
 }
