@@ -27,14 +27,20 @@ public class Cassava extends Application {
 
     private static final List<Task> tasks = new ArrayList<Task>();
 
+    private static String loadWarning = null;
+
     private static void loadTasks() {
         List<Task> savedTasks = new ArrayList<>();
 
         try {
             savedTasks = getTasks();
-        } catch (IOException | FileFormatException e) {
-            System.out.println(e);
-            System.exit(1);
+        } catch (FileFormatException e) {
+            loadWarning = "Your data file appears to be corrupted, so I've started you off with "
+                    + "an empty task list. Your previous tasks were not lost, but adding new tasks "
+                    + "may overwrite the corrupted file.";
+        } catch (IOException e) {
+            loadWarning = "I couldn't read your saved tasks (" + e.getMessage() + "), "
+                    + "so I've started you off with an empty task list.";
         }
 
         tasks.addAll(savedTasks);
@@ -45,12 +51,13 @@ public class Cassava extends Application {
             putTasks(tasks);
         } catch (IOException e) {
             System.out.println(e);
-            System.exit(1);
         }
     }
 
     @Override
     public void start(Stage stage) {
+        loadTasks();
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Cassava.class.getResource("/views/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
@@ -60,7 +67,12 @@ public class Cassava extends Application {
             stage.setScene(scene);
             stage.setResizable(true);
             stage.setTitle(name);
+            stage.setOnCloseRequest(event -> saveTasks());
             stage.show();
+
+            if (loadWarning != null) {
+                controller.addErrorDialog(loadWarning);
+            }
         } catch (IOException e) {
             System.out.println(e);
             System.exit(1);

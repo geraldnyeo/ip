@@ -365,7 +365,6 @@ public class Handlers {
             putTasks(tasks);
         } catch (IOException e) {
             System.out.println(e);
-            System.exit(1);
         }
     }
 
