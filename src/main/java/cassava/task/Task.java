@@ -53,7 +53,7 @@ public abstract class Task {
                 + "[" + (completed ? "X" : " ") + "] "
                 + description
                 + (this.taskPriority != TaskPriority.UNKNOWN
-                ? " [ " + taskPriorityToString(this.taskPriority) + "]"
+                ? " [" + taskPriorityToString(this.taskPriority) + "]"
                 : "");
     }
 
