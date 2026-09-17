@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Handler;
 
 import cassava.gui.MainWindow;
 import cassava.task.DeadlineTask;
@@ -23,90 +24,90 @@ import cassava.task.ToDoTask;
 public class Handlers {
 
     /**
+     * Represents the outcome of handling a user command.
+     * @param message Text to display to the user.
+     * @param isError Whether this outcome represents an error/invalid input.
+     * @param isExit Whether the program should exit after this outcome.
+     */
+    public record HandlerResult(String message, boolean isError, boolean isExit) { }
+
+    /**
      * Routes the user input to the appropriate handler function.
      * Checks if the correct input parameters exist, if not,
      * routes to the invalid input handler.
-     *
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to update.
      * @param inputArgs Parsed user input command and parameters.
      * @param validCmds List of valid commands accepted by Cassava.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleInput(
-            MainWindow mainWindow,
+    public static HandlerResult handleInput(
             List<Task> tasks,
             HashMap<String, String> inputArgs,
             List<String> validCmds
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
         String command = inputArgs.getOrDefault("command", "");
         String commandOption = inputArgs.getOrDefault(command, "");
 
         if (command.isEmpty()) {
-            return handleInvalid(mainWindow, "You have not entered any text.");
+            return handleInvalid("You have not entered any text.");
         }
         if (!validCmds.contains(command)) {
-            return handleInvalid(mainWindow, "Sorry, I don't recognise this command.");
+            return handleInvalid("Sorry, I don't recognise this command.");
         }
 
         return switch (command) {
-            case "list" -> handleList(mainWindow, tasks);
+            case "list" -> handleList(tasks);
             case "find" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a search term to find.")
-                    : handleFind(mainWindow, tasks, commandOption);
+                    ? handleInvalid("You did not specify a search term to find.")
+                    : handleFind(tasks, commandOption);
             case "todo" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow,"You did not specify a task to add.")
-                    : handleAddTodo(mainWindow, tasks, commandOption);
+                    ? handleInvalid("You did not specify a task to add.")
+                    : handleAddTodo(tasks, commandOption);
             case "deadline" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a task to add.")
+                    ? handleInvalid("You did not specify a task to add.")
                     : !inputArgs.containsKey("by")
-                    ? handleInvalid(mainWindow, "You did not specify a date for the deadline.")
-                    : handleAddDeadline(mainWindow, tasks, commandOption, inputArgs.get("by"));
+                    ? handleInvalid("You did not specify a date for the deadline.")
+                    : handleAddDeadline(tasks, commandOption, inputArgs.get("by"));
             case "event" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a task to add.")
+                    ? handleInvalid("You did not specify a task to add.")
                     : !inputArgs.containsKey("from")
-                    ? handleInvalid(mainWindow, "You did not specify a time for 'from'.")
+                    ? handleInvalid("You did not specify a time for 'from'.")
                     : !inputArgs.containsKey("to")
-                    ? handleInvalid(mainWindow, "You did not specify a time for 'to'.")
-                    : handleAddEvent(mainWindow, tasks, commandOption, inputArgs.get("from"), inputArgs.get("to"));
+                    ? handleInvalid("You did not specify a time for 'to'.")
+                    : handleAddEvent(tasks, commandOption, inputArgs.get("from"), inputArgs.get("to"));
             case "mark" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a task to mark.")
-                    : handleMark(mainWindow, tasks, commandOption);
+                    ? handleInvalid("You did not specify a task to mark.")
+                    : handleMark(tasks, commandOption);
             case "unmark" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a task to unmark.")
-                    : handleUnmark(mainWindow, tasks, commandOption);
+                    ? handleInvalid("You did not specify a task to unmark.")
+                    : handleUnmark(tasks, commandOption);
             case "prioritise" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a task to prioritise.")
+                    ? handleInvalid("You did not specify a task to prioritise.")
                     : !inputArgs.containsKey("level")
-                    ? handleInvalid(mainWindow, "You did not specify a priority level to set.")
-                    : handlePrioritise(mainWindow, tasks, commandOption, inputArgs.get("level"));
+                    ? handleInvalid("You did not specify a priority level to set.")
+                    : handlePrioritise(tasks, commandOption, inputArgs.get("level"));
             case "delete" -> commandOption.isEmpty()
-                    ? handleInvalid(mainWindow, "You did not specify a task to delete.")
-                    : handleDelete(mainWindow, tasks, commandOption);
-            case "bye" -> handleExit(mainWindow);
-            default -> handleInvalid(mainWindow, "Sorry, I don't recognise this command.");
+                    ? handleInvalid("You did not specify a task to delete.")
+                    : handleDelete(tasks, commandOption);
+            case "bye" -> handleExit();
+            default -> handleInvalid("Sorry, I don't recognise this command.");
         };
     }
 
     /**
      * Prints list of tasks.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to read from.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleList(
-            MainWindow mainWindow,
+    public static HandlerResult handleList(
             List<Task> tasks
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
         if (tasks.isEmpty()) {
-            mainWindow.addCassavaDialog("No tasks have been added yet...");
-            return false;
+            return new HandlerResult("No tasks have been added yet...", false, false);
         }
 
         StringBuilder sb = new StringBuilder();
@@ -116,24 +117,20 @@ public class Handlers {
             }
             sb.append(i + 1).append(". ").append(tasks.get(i).toString());
         }
-        mainWindow.addCassavaDialog(sb.toString());
 
-        return false;
+        return new HandlerResult(sb.toString(), false, false);
     }
 
     /**
      * Filters and prints tasks according to the search term.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to search from.
      * @param search Search term to search for.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleFind(
-            MainWindow mainWindow,
+    public static HandlerResult handleFind(
             List<Task> tasks,
             String search
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
         List<Task> filtered = tasks.stream()
@@ -141,8 +138,7 @@ public class Handlers {
                 .toList();
 
         if (filtered.isEmpty()) {
-            mainWindow.addCassavaDialog("No tasks were found...");
-            return false;
+            return new HandlerResult("No tasks were found...", false, false);
         }
 
         StringBuilder sb = new StringBuilder("Here are the matching tasks I found:\n");
@@ -152,72 +148,60 @@ public class Handlers {
             }
             sb.append(i + 1).append(". ").append(filtered.get(i).toString());
         }
-        mainWindow.addCassavaDialog(sb.toString());
 
-        return false;
+        return new HandlerResult(sb.toString(), false, false);
     }
 
     /**
      * Adds a ToDoTask.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to update.
      * @param description Description of the ToDoTask to be added.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleAddTodo(
-            MainWindow mainWindow,
+    public static HandlerResult handleAddTodo(
             List<Task> tasks,
             String description
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
         Task task = new ToDoTask(description);
         tasks.add(task);
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog("Added: " + description);
-
-        return false;
+        return new HandlerResult("Added: " + description, false, false);
     }
 
     /**
      * Adds a DeadlineTask.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to update.
      * @param description Description of the DeadlineTask to be added.
      * @param byDateString Date by which the task should be completed
      *                     as a String in yyyy-MM-dd format.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleAddDeadline(
-            MainWindow mainWindow,
+    public static HandlerResult handleAddDeadline(
             List<Task> tasks,
             String description,
             String byDateString
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
         LocalDate byDate = LocalDate.now();
         try {
             byDate = LocalDate.parse(byDateString);
         } catch (DateTimeParseException e) {
-            return handleInvalid(mainWindow, "You must input a date in the format 'yyyy-mm-dd' for the 'by' argument.");
+            return handleInvalid("You must input a date in the format 'yyyy-mm-dd' for the 'by' argument.");
         }
 
         Task task = new DeadlineTask(description, byDate);
         tasks.add(task);
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog("Added: " + task.toString());
-
-        return false;
+        return new HandlerResult("Added: " + task, false, false);
     }
 
     /**
      * Adds a EventTask
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to update.
      * @param description Description of the EventTask to be added.
      * @param fromDateString Date from which the event will start
@@ -226,14 +210,12 @@ public class Handlers {
      *                     as a String in yyyy-MM-dd format.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleAddEvent(
-            MainWindow mainWindow,
+    public static HandlerResult handleAddEvent(
             List<Task> tasks,
             String description,
             String fromDateString,
             String toDateString
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
         LocalDate fromDate = LocalDate.now();
@@ -242,7 +224,7 @@ public class Handlers {
             fromDate = LocalDate.parse(fromDateString);
             toDate = LocalDate.parse(toDateString);
         } catch (DateTimeParseException e) {
-            return handleInvalid(mainWindow, "You must input a date in the format 'yyyy-mm-dd' "
+            return handleInvalid("You must input a date in the format 'yyyy-mm-dd' "
                     + "for the 'from' and 'by arguments.");
         }
 
@@ -250,157 +232,126 @@ public class Handlers {
         tasks.add(task);
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog("Added: " + task.toString());
-
-        return false;
+        return new HandlerResult("Added: " + task, false, false);
     }
 
     /**
      * Marks a task as completed.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to update.
      * @param indexArg Index of the task in the list to mark as completed.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleMark(
-            MainWindow mainWindow,
+    public static HandlerResult handleMark(
             List<Task> tasks,
             String indexArg
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
-        int index = parseIndex(mainWindow, indexArg, tasks.size());
+        int index = parseIndex(indexArg, tasks.size());
         if (index == -1) {
-            return false; // exit immediately
+            return handleInvalid("There is no such Task, or your input was not a valid number.");
         }
         tasks.get(index).mark();
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog(tasks.get(index).toString());
-
-        return false;
+        return new HandlerResult(tasks.get(index).toString(), false, false);
     }
 
     /**
      * Marks a task as incomplete.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to update.
      * @param indexArg Index of the task in the list to mark as incomplete.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleUnmark(
-            MainWindow mainWindow,
+    public static HandlerResult handleUnmark(
             List<Task> tasks,
             String indexArg
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
-        int index = parseIndex(mainWindow, indexArg, tasks.size());
+        int index = parseIndex(indexArg, tasks.size());
         if (index == -1) {
-            return false; // exit immediately
+            return handleInvalid("There is no such Task, or your input was not a valid number.");
         }
 
         tasks.get(index).unmark();
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog(tasks.get(index).toString());
-
-        return false;
+        return new HandlerResult(tasks.get(index).toString(), false, false);
     }
 
     /**
      * Sets the priority level for a task.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to update.
      * @param indexArg Index of the task in the list to mark as incomplete.
      * @param taskPriorityString Priority level to set the task to.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handlePrioritise(
-            MainWindow mainWindow,
+    public static HandlerResult handlePrioritise(
             List<Task> tasks,
             String indexArg,
             String taskPriorityString
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
-        int index = parseIndex(mainWindow, indexArg, tasks.size());
+        int index = parseIndex(indexArg, tasks.size());
         if (index == -1) {
-            return false; // exit immediately
+            return handleInvalid("There is no such Task, or your input was not a valid number.");
         }
 
         if (!taskPriorityString.equals("high")
             && !taskPriorityString.equals("medium")
             && !taskPriorityString.equals("low")) {
-            return handleInvalid(mainWindow, "Priority level must be one of: "
+            return handleInvalid("Priority level must be one of: "
                     + "'high', 'medium', or 'low'.");
         }
 
         tasks.get(index).setTaskPriority(stringToTaskPriority(taskPriorityString));
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog(tasks.get(index).toString());
-
-        return false;
+        return new HandlerResult(tasks.get(index).toString(), false, false);
     }
 
     /**
      * Deletes a task.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param tasks List of tasks to update.
      * @param indexArg Index of the task in the list to delete.
      * @return true If program should exit command loop Else false.
      */
-    public static boolean handleDelete(
-            MainWindow mainWindow,
+    public static HandlerResult handleDelete(
             List<Task> tasks,
             String indexArg
     ) {
-        assert mainWindow != null;
         assert tasks != null;
 
-        int index = parseIndex(mainWindow, indexArg, tasks.size());
+        int index = parseIndex(indexArg, tasks.size());
         if (index == -1) {
-            return false; // exit immediately
+            return handleInvalid("There is no such Task, or your input was not a valid number.");
         }
 
         Task task = tasks.remove(index);
         saveTasks(tasks);
 
-        mainWindow.addCassavaDialog(task.toString());
-
-        return false;
+        return new HandlerResult(tasks.toString(), false, false);
     }
 
     /**
      * Prints an error message when the user enters invalid input.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param msg Error message to print.
      * @return false; the program should continue running
      */
-    public static boolean handleInvalid(
-            MainWindow mainWindow,
+    public static HandlerResult handleInvalid(
             String msg
     ) {
-        assert mainWindow != null;
-
-        mainWindow.addErrorDialog(msg);
-        return false;
+        return new HandlerResult(msg, true, false);
     }
 
     /**
      * Prints the goodbye message when the user exits the program.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @return true; the program should exit here
      */
-    public static boolean handleExit(MainWindow mainWindow) {
-        assert mainWindow != null;
-
-        mainWindow.addCassavaDialog("Bye! See you again soon.");
-        return true;
+    public static HandlerResult handleExit() {
+        return new HandlerResult("Bye! See you again soon.", false, true);
     }
 
     /**
@@ -420,25 +371,23 @@ public class Handlers {
 
     /**
      * Parses an input String argument into an integer.
-     * @param mainWindow Reference to mainWindow for executing UI functions.
      * @param indexArg Index of the task in the list to access.
      * @param tasksSize Size of task list.
      * @return -1 If unable to parse Else index of the task in the list.
      */
     private static int parseIndex(
-            MainWindow mainWindow,
             String indexArg,
             int tasksSize
     ) {
         try {
             int index = Integer.parseInt(indexArg) - 1;
             if (index >= tasksSize) {
-                handleInvalid(mainWindow, "There is no such Task.");
+                handleInvalid("There is no such Task.");
                 return -1;
             }
             return index;
         } catch (NumberFormatException e) {
-            handleInvalid(mainWindow, "Please use only numbers to specify the task you wish to operate on.");
+            handleInvalid("Please use only numbers to specify the task you wish to operate on.");
             return -1;
         }
     }

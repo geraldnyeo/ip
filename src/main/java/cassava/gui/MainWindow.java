@@ -7,6 +7,7 @@ import static cassava.ui.Parser.parseUserInput;
 import java.util.HashMap;
 import java.util.List;
 
+import cassava.Handlers;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -52,9 +53,15 @@ public class MainWindow {
 
         // Handle User Input
         HashMap<String, String> inputArgs = parseUserInput(input);
-        boolean exit = handleInput(this, tasks, inputArgs, VALID_CMDS);
+        Handlers.HandlerResult result = handleInput(tasks, inputArgs, VALID_CMDS);
 
-        if (exit) {
+        if (result.isError()) {
+            addErrorDialog(result.message());
+        } else {
+            addCassavaDialog(result.message());
+        }
+
+        if (result.isExit()) {
             Platform.exit();
             System.exit(0);
         }
