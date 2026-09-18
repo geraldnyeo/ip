@@ -28,7 +28,7 @@ public class EventTaskTest {
                 "project meeting", true, Task.TaskPriority.MEDIUM,
                 LocalDate.parse("2026-08-28"), LocalDate.parse("2026-08-29"));
         assertEquals(
-                "[E] [X] project meeting [ medium] (from: Aug 28 2026 to: Aug 29 2026)", task.toString());
+                "[E] [X] project meeting [medium] (from: Aug 28 2026 to: Aug 29 2026)", task.toString());
     }
 
     @Test

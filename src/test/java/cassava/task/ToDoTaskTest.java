@@ -21,7 +21,7 @@ public class ToDoTaskTest {
     @Test
     public void testConstructor_fullArgs() {
         ToDoTask task = new ToDoTask("water the plants", true, Task.TaskPriority.MEDIUM);
-        assertEquals("[T] [X] water the plants [ medium]", task.toString());
+        assertEquals("[T] [X] water the plants [medium]", task.toString());
     }
 
     @Test

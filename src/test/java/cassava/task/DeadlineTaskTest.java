@@ -24,7 +24,7 @@ public class DeadlineTaskTest {
     public void testConstructor_fullArgs_toString() {
         DeadlineTask task = new DeadlineTask(
                 "finish assignment", true, Task.TaskPriority.HIGH, LocalDate.parse("2026-08-28"));
-        assertEquals("[D] [X] finish assignment [ high] (by: Aug 28 2026)", task.toString());
+        assertEquals("[D] [X] finish assignment [high] (by: Aug 28 2026)", task.toString());
     }
 
     @Test

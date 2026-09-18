@@ -332,7 +332,7 @@ public class Handlers {
         Task task = tasks.remove(index);
         saveTasks(tasks);
 
-        return new HandlerResult(tasks.toString(), false, false);
+        return new HandlerResult(task.toString(), false, false);
     }
 
     /**
