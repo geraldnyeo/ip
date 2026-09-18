@@ -14,7 +14,9 @@ It can help you track todos, deadlines and even events!
 5. The GUI should appear. Type any command in the input box and press Enter or click Send to try it out.
 6. Refer to the [Features](#features) below for details on each command.
 
-## Adding a ToDo
+## Features
+
+### Adding a ToDo
 
 Adds a ToDo to your task list. *(A ToDo is a task which only has a description.)*
 
@@ -23,7 +25,7 @@ Command: `todo (task description)`
 Example: `todo water the plants` 
 * Adds a ToDo: 'water the plants'.
 
-## Adding a Deadline
+### Adding a Deadline
 
 Adds a Deadline to your task list. *(A Deadline is a task with a date to complete it by.)*
 
@@ -33,7 +35,7 @@ Example: `deadline submit assignment \by 2026-09-18`
 * Adds a Deadline: 'submit assignment'.
 * The due date is 2026-09-18.
 
-## Adding an Event
+### Adding an Event
 
 Adds an Event to your task list. *(An Event is a task with a start and end date.)*
 
@@ -44,7 +46,7 @@ Example: `event festival \from 2026-09-19 \to 2026-09-20`
 * The start date is 2026-09-19.
 * The end date is 2026-09-20.
 
-## Listing all Tasks
+### Listing all Tasks
 
 Shows a list of all your tasks, as well as information about them.
 
@@ -67,7 +69,7 @@ Example: `list`
 3. [E] [] project meeting (from: Sep 19 2026 to: Sep 20 2026) 
 ```
 
-## Finding Tasks
+### Finding Tasks
 
 Shows a list of all tasks containing the search query.
 
@@ -81,7 +83,7 @@ Here are the matching tasks I found:
 1. [T] [X] water the plants [low]
 ```
 
-## Marking a Task
+### Marking a Task
 
 Marks a task as completed.
 
@@ -94,7 +96,7 @@ Example: `mark 2`
 ```
 * The output shows the task which has been marked.
 
-## Unmarking a Task
+### Unmarking a Task
 
 Marks a task as incomplete.
 
@@ -107,7 +109,7 @@ Example: `unmark 2`
 ```
 * The output shows the task which has been unmarked.
 
-## Prioritising a Task
+### Prioritising a Task
 
 Sets a priority level for a task.
 
@@ -121,7 +123,7 @@ Example: `prioritise 1 \level high`
 ```
 * The output shows the task which has been prioritised.
 
-## Deleting a Task
+### Deleting a Task
 
 Deletes a task from the task list.
 
@@ -134,9 +136,22 @@ Example: `delete 1`
 ```
 * The output shows the task which has been deleted.
 
-## Exiting the Application
+### Exiting the Application
 
 You can either use the close button at the top right of the application window, 
 or you can use the `bye` command.
 
 Command: `bye`
+
+### Handling Errors
+
+If you accidentally input an invalid command, or forget some parameters, not to worry!
+Cassava will prompt you to correct your mistake with an error message.
+You can safely test out commands without worry about losing your task data.
+
+## Settings
+
+### Switching Themes
+
+Cassava supports both dark and light mode! 
+Click the toggle button (🌙 / ☀) in the top right hand corner to swap between dark and light mode.
