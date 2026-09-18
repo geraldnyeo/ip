@@ -7,15 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cassava.data.FileFormatException;
+import cassava.gui.MainWindow;
+import cassava.task.Task;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
-import cassava.data.FileFormatException;
-import cassava.gui.MainWindow;
-import cassava.task.Task;
 
 /**
  * Prompts the user to add, update or delete tasks.

@@ -10,6 +10,13 @@ public class DeadlineTask extends Task {
 
     private LocalDate date;
 
+    /**
+     * Default constructor for DeadlineTask.
+     * @param description Text description of task.
+     * @param completed Completion status.
+     * @param taskPriority Priority of task.
+     * @param date Date to complete task by.
+     */
     public DeadlineTask(
             String description,
             boolean completed,
@@ -20,6 +27,12 @@ public class DeadlineTask extends Task {
         this.date = date;
     }
 
+    /**
+     * Creates a DeadlineTask with completed = false,
+     * and taskPriority = UNKNOWN.
+     * @param description Text description of task.
+     * @param date Date to complete task by.
+     */
     public DeadlineTask(String description, LocalDate date) {
         super(description);
         this.date = date;

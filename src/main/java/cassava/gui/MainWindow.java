@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import cassava.Handlers;
+import cassava.task.Task;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,8 +18,9 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-import cassava.task.Task;
-
+/**
+ * Represents the main window in the GUI.
+ */
 public class MainWindow {
     @FXML
     private AnchorPane rootPane;
@@ -44,6 +46,11 @@ public class MainWindow {
         this.tasks = tasks;
     }
 
+    /**
+     * Handles the user input.
+     * Gets the result from Cassava.Handlers,
+     * then creates and adds the corresponding DialogBox.
+     */
     @FXML
     private void handleUserInput() {
         // Add User Dialog
@@ -67,6 +74,9 @@ public class MainWindow {
         }
     }
 
+    /**
+     * Toggles the application between light and dark mode.
+     */
     @FXML
     private void handleToggleDarkMode() {
         boolean isDark = darkModeToggle.isSelected();
@@ -79,14 +89,26 @@ public class MainWindow {
         }
     }
 
+    /**
+     * Add a user message DialogBox.
+     * @param input Message to display.
+     */
     private void addUserDialog(String input) {
         dialogContainer.getChildren().add(DialogBox.getUserDialog(input));
     }
 
+    /**
+     * Add a Cassava message DialogBox.
+     * @param input Message to display.
+     */
     public void addCassavaDialog(String input) {
         dialogContainer.getChildren().add(DialogBox.getCassavaDialog(input));
     }
 
+    /**
+     * Add an error message DialogBox.
+     * @param input Message to display.
+     */
     public void addErrorDialog(String input) {
         dialogContainer.getChildren().add(DialogBox.getErrorDialog(input));
     }

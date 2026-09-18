@@ -11,6 +11,14 @@ public class EventTask extends Task {
     private LocalDate from;
     private LocalDate to;
 
+    /**
+     * Default constructor for EventTask.
+     * @param description Text description of event.
+     * @param completed Completion status.
+     * @param taskPriority Priority of event.
+     * @param from Date which event starts.
+     * @param to Date which event ends.
+     */
     public EventTask(
             String description,
             boolean completed,
@@ -23,6 +31,13 @@ public class EventTask extends Task {
         this.to = to;
     }
 
+    /**
+     * Creates an EventTask with completed = false,
+     * and taskPriority = UNKNOWN.
+     * @param description Text description of event.
+     * @param from Date which event starts.
+     * @param to Date which event ends.
+     */
     public EventTask(String description, LocalDate from, LocalDate to) {
         super(description);
         this.from = from;

@@ -8,9 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Handler;
 
-import cassava.gui.MainWindow;
 import cassava.task.DeadlineTask;
 import cassava.task.EventTask;
 import cassava.task.Task;
