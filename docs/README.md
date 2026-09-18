@@ -5,6 +5,15 @@
 Cassava is a desktop application for managing tasks. 
 It can help you track todos, deadlines and even events!
 
+## Quick Start
+
+1. Ensure you have Java 17 or above installed.
+2. Download the latest `cassava.jar` from [here]([INSERT_RELEASE_LINK](https://github.com/geraldnyeo/ip/releases/)).
+3. Copy the file to the folder you want to use as the home folder for Cassava.
+4. Open a terminal in that folder and run: `java -jar cassava.jar`
+5. The GUI should appear. Type any command in the input box and press Enter or click Send to try it out.
+6. Refer to the [Features](#features) below for details on each command.
+
 ## Adding a ToDo
 
 Adds a ToDo to your task list. *(A ToDo is a task which only has a description.)*
