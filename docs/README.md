@@ -1,7 +1,6 @@
 # Cassava User Guide
 
-![Screenshot of Cassava]
-(/docs/Ui.png)
+![Screenshot of Cassava](/docs/Ui.png)
 
 Cassava is a desktop application for managing tasks. 
 It can help you track todos, deadlines and even events!
@@ -29,7 +28,7 @@ Example: `deadline submit assignment \by 2026-09-18`
 
 Adds an Event to your task list. *(An Event is a task with a start and end date.)*
 
-Command: `event (task description) \by (yyyy-mm-dd)`
+Command: `event (task description) \from (yyyy-mm-dd) \to (yyyy-mm-dd)`
 
 Example: `event festival \from 2026-09-19 \to 2026-09-20`
 * Adds an Event: 'festival'.
@@ -117,7 +116,7 @@ Example: `prioritise 1 \level high`
 
 Deletes a task from the task list.
 
-Command `delete (index)`
+Command: `delete (index)`
 * Index refers to the list number of the task.
 
 Example: `delete 1`
