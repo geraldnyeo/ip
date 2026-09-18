@@ -1,30 +1,134 @@
-# Duke User Guide
+# Cassava User Guide
 
-// Update the title above to match the actual product name
+![Screenshot of Cassava]
+(/docs/Ui.png)
 
-// Product screenshot goes here
+Cassava is a desktop application for managing tasks. 
+It can help you track todos, deadlines and even events!
 
-// Product intro goes here
+## Adding a ToDo
 
-## Adding deadlines
+Adds a ToDo to your task list. *(A ToDo is a task which only has a description.)*
 
-// Describe the action and its outcome.
+Command: `todo (task description)`
 
-// Give examples of usage
+Example: `todo water the plants` 
+* Adds a ToDo: 'water the plants'.
 
-Example: `keyword (optional arguments)`
+## Adding a Deadline
 
-// A description of the expected outcome goes here
+Adds a Deadline to your task list. *(A Deadline is a task with a date to complete it by.)*
 
+Command: `deadline (task description) \by (yyyy-mm-dd)`
+
+Example: `deadline submit assignment \by 2026-09-18` 
+* Adds a Deadline: 'submit assignment'.
+* The due date is 2026-09-18.
+
+## Adding an Event
+
+Adds an Event to your task list. *(An Event is a task with a start and end date.)*
+
+Command: `event (task description) \by (yyyy-mm-dd)`
+
+Example: `event festival \from 2026-09-19 \to 2026-09-20`
+* Adds an Event: 'festival'.
+* The start date is 2026-09-19.
+* The end date is 2026-09-20.
+
+## Listing all Tasks
+
+Shows a list of all your tasks, as well as information about them.
+
+Command: `list`
+
+Output Format:
 ```
-expected output
+1. [type] [mark] (task description) [priority] (extra info)
+2. ...
+```
+* `[type]` is the type of task, either `T` (ToDo), `D` (Deadline) or `E` (Event).
+* `[mark]` indicates whether the task has been completed, either `X` (completed) or blank.
+* `[priority]` indicates the priority level of the task, either `low`, `medium`, `high` or blank.
+* `(extra info)` includes information such as start, end and due dates. May be blank.
+
+Example: `list`
+```
+1. [T] [X] water the plants [low]
+2. [D] [] submit assignment (by: Sep 18 2026)
+3. [E] [] project meeting (from: Sep 19 2026 to: Sep 20 2026) 
 ```
 
-## Feature ABC
+## Finding Tasks
 
-// Feature details
+Shows a list of all tasks containing the search query.
 
+Command: `find (query)`
 
-## Feature XYZ
+Output Format: Same as `list`.
 
-// Feature details
+Example: `find plant`
+```
+Here are the matching tasks I found:
+1. [T] [X] water the plants [low]
+```
+
+## Marking a Task
+
+Marks a task as completed.
+
+Command: `mark (index)`
+* Index refers to the list number of the task.
+
+Example: `mark 2`
+```
+[D] [X] submit assignment (by: Sep 18 2026)
+```
+* The output shows the task which has been marked.
+
+## Unmarking a Task
+
+Marks a task as incomplete.
+
+Command: `unmark (index)`
+* Index refers to the list number of the task.
+
+Example: `unmark 2`
+```
+[D] [] submit assignment (by: Sep 18 2026)
+```
+* The output shows the task which has been unmarked.
+
+## Prioritising a Task
+
+Sets a priority level for a task.
+
+Command: `prioritise (index) \level (priority)`
+* Index refers to the list number of the task.
+* Priority refers to the priority level of the task, either `low`, `medium` or `high`.
+
+Example: `prioritise 1 \level high`
+```
+[T] [X] water the plants [high]
+```
+* The output shows the task which has been prioritised.
+
+## Deleting a Task
+
+Deletes a task from the task list.
+
+Command `delete (index)`
+* Index refers to the list number of the task.
+
+Example: `delete 1`
+```
+[T] [X] water the plants [high]
+```
+* The output shows the task which has been deleted.
+
+## Exiting the Application
+
+You can either use the close button at the top right of the application window, 
+or you can use the `bye` command.
+
+Command: `bye`
