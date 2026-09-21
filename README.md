@@ -1,6 +1,6 @@
 # Cassava User Guide
 
-![Screenshot of Cassava](/docs/Ui.png)
+![Screenshot of Cassava](Ui.png)
 
 Cassava is a desktop application for managing tasks.
 It can help you track todos, deadlines and even events!
@@ -155,3 +155,12 @@ You can safely test out commands without worry about losing your task data.
 
 Cassava supports both dark and light mode!
 Click the toggle button (🌙 / ☀) in the top right hand corner to swap between dark and light mode.
+
+## Credits
+
+### AI Usage
+Claude Sonnet 5 (Free Tier) was used heavily to:
+* Generate Test Cases (A-MoreTesting): Used to expand on an initial set of test cases,
+  and create test cases for Task classes and TaskData.
+* Improve the GUI (A-BetterGUI): Used to generate code to improve the GUI,
+  mainly in the FXML and CSS files, with some changes in the corresponding Java files.
