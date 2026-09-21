@@ -1,6 +1,6 @@
 # Cassava User Guide
 
-![Screenshot of Cassava](Ui.png)
+![Screenshot of Cassava](docs/Ui.png)
 
 Cassava is a desktop application for managing tasks.
 It can help you track todos, deadlines and even events!
