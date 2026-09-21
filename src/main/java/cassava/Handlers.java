@@ -21,6 +21,9 @@ import cassava.task.ToDoTask;
  */
 public class Handlers {
 
+    // AI used here to refactor
+    // Suggested returning HandlerResult instead of a boolean,
+    // and moving GUI window creation to MainWindow.fxml
     /**
      * Represents the outcome of handling a user command.
      * @param message Text to display to the user.
